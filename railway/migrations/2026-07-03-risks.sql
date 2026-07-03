@@ -1,0 +1,18 @@
+-- Risk Register
+CREATE TABLE IF NOT EXISTS risks (
+  id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  risk_id VARCHAR(50) NULL,
+  description TEXT NOT NULL,
+  likelihood TINYINT NULL,
+  impact TINYINT NULL,
+  mitigation TEXT NULL,
+  owner VARCHAR(255) NULL,
+  status VARCHAR(50) NULL DEFAULT 'Open',
+  date_identified DATE NULL,
+  created_by CHAR(36) NULL,
+  modified_by CHAR(36) NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL,
+  FOREIGN KEY (modified_by) REFERENCES users(id) ON DELETE SET NULL
+);
