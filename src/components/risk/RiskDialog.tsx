@@ -1,0 +1,143 @@
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus } from "lucide-react";
+import { Risk, RISK_STATUSES, scoreLevel } from "./risk-types";
+import { Badge } from "@/components/ui/badge";
+
+interface Props {
+  risk?: Risk | null;
+  open?: boolean;
+  onOpenChange?: (o: boolean) => void;
+  onSave: (r: Risk) => Promise<void> | void;
+  trigger?: React.ReactNode;
+}
+
+const empty: Risk = {
+  id: "",
+  riskId: "",
+  description: "",
+  likelihood: null,
+  impact: null,
+  mitigation: "",
+  owner: "",
+  status: "Open",
+  dateIdentified: new Date().toISOString().split("T")[0],
+};
+
+export const RiskDialog = ({ risk, open, onOpenChange, onSave, trigger }: Props) => {
+  const controlled = open !== undefined;
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = controlled ? open! : internalOpen;
+  const setOpen = (o: boolean) => (controlled ? onOpenChange?.(o) : setInternalOpen(o));
+
+  const [form, setForm] = useState<Risk>(empty);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) setForm(risk ? { ...empty, ...risk } : { ...empty });
+  }, [isOpen, risk]);
+
+  const score =
+    form.likelihood && form.impact ? Number(form.likelihood) * Number(form.impact) : null;
+  const level = scoreLevel(score);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      await onSave(form);
+      setOpen(false);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const set = <K extends keyof Risk>(k: K, v: Risk[K]) => setForm((f) => ({ ...f, [k]: v }));
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setOpen}>
+      {trigger !== undefined ? (
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+      ) : !controlled ? (
+        <DialogTrigger asChild>
+          <Button className="gap-2"><Plus className="h-4 w-4" />Add Risk</Button>
+        </DialogTrigger>
+      ) : null}
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{risk ? "Edit Risk" : "Add Risk"}</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Risk ID</Label>
+              <Input value={form.riskId || ""} onChange={(e) => set("riskId", e.target.value)} placeholder="e.g. R-001" />
+            </div>
+            <div className="space-y-2">
+              <Label>Date Identified</Label>
+              <Input type="date" value={form.dateIdentified || ""} onChange={(e) => set("dateIdentified", e.target.value)} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Description *</Label>
+            <Textarea required rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} />
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label>Likelihood (1-5)</Label>
+              <Select value={form.likelihood?.toString() || ""} onValueChange={(v) => set("likelihood", Number(v))}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+                <SelectContent>{[1,2,3,4,5].map(n => <SelectItem key={n} value={String(n)}>{n}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Impact (1-5)</Label>
+              <Select value={form.impact?.toString() || ""} onValueChange={(v) => set("impact", Number(v))}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+                <SelectContent>{[1,2,3,4,5].map(n => <SelectItem key={n} value={String(n)}>{n}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Risk Score</Label>
+              <div className="h-10 flex items-center gap-2">
+                <span className="text-2xl font-semibold tabular-nums">{score ?? "—"}</span>
+                <Badge className={level.className}>{level.label}</Badge>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Mitigation</Label>
+            <Textarea rows={3} value={form.mitigation || ""} onChange={(e) => set("mitigation", e.target.value)} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Owner</Label>
+              <Input value={form.owner || ""} onChange={(e) => set("owner", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select value={form.status || "Open"} onValueChange={(v) => set("status", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>{RISK_STATUSES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save Risk"}</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};

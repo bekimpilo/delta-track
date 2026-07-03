@@ -934,6 +934,86 @@ class ApiService {
     });
     if (!response.ok) throw new Error('Failed to reject request');
   }
+
+  // ==================== Risks (Risk Register) ====================
+  async getRisks(): Promise<any[]> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_risks');
+      return stored ? JSON.parse(stored) : [];
+    }
+    const response = await fetch(`${BASE_URL}/risks`, { headers: this.getAuthHeaders() });
+    if (!response.ok) throw new Error('Failed to fetch risks');
+    return response.json();
+  }
+
+  async createRisk(data: any): Promise<any> {
+    if (MOCK_MODE) {
+      const risk = { id: crypto.randomUUID(), ...data, riskScore: (data.likelihood || 0) * (data.impact || 0) };
+      const stored = localStorage.getItem('mock_risks');
+      const all = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('mock_risks', JSON.stringify([risk, ...all]));
+      return risk;
+    }
+    const response = await fetch(`${BASE_URL}/risks`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to create risk');
+    return response.json();
+  }
+
+  async updateRisk(id: string, data: any): Promise<any> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_risks');
+      const all = stored ? JSON.parse(stored) : [];
+      const idx = all.findIndex((r: any) => r.id === id);
+      if (idx !== -1) {
+        all[idx] = { ...all[idx], ...data, riskScore: (data.likelihood || 0) * (data.impact || 0) };
+        localStorage.setItem('mock_risks', JSON.stringify(all));
+        return all[idx];
+      }
+      return { id, ...data };
+    }
+    const response = await fetch(`${BASE_URL}/risks/${id}`, {
+      method: 'PUT',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to update risk');
+    return response.json();
+  }
+
+  async deleteRisk(id: string): Promise<void> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_risks');
+      const all = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('mock_risks', JSON.stringify(all.filter((r: any) => r.id !== id)));
+      return;
+    }
+    const response = await fetch(`${BASE_URL}/risks/${id}`, {
+      method: 'DELETE',
+      headers: this.getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error('Failed to delete risk');
+  }
+
+  async bulkCreateRisks(risks: any[]): Promise<{ inserted: any[]; errors: { row: number; message: string }[] }> {
+    if (MOCK_MODE) {
+      const inserted = risks.map(r => ({ id: crypto.randomUUID(), ...r, riskScore: (r.likelihood || 0) * (r.impact || 0) }));
+      const stored = localStorage.getItem('mock_risks');
+      const all = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('mock_risks', JSON.stringify([...inserted, ...all]));
+      return { inserted, errors: [] };
+    }
+    const response = await fetch(`${BASE_URL}/risks/bulk`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(risks),
+    });
+    if (!response.ok && response.status !== 207) throw new Error('Failed to bulk upload risks');
+    return response.json();
+  }
 }
 
 export const api = new ApiService();

@@ -12,6 +12,7 @@ const organisationsRoutes = require('./routes/organisations');
 const userRequestsRoutes = require('./routes/userRequests');
 const capacityAssessmentsRoutes = require('./routes/capacityAssessments');
 const orgLogosRoutes = require('./routes/orgLogos');
+const risksRoutes = require('./routes/risks');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +44,7 @@ app.use('/api/organisations', organisationsRoutes);
 app.use('/api/user-requests', userRequestsRoutes);
 app.use('/api/capacity-assessments', capacityAssessmentsRoutes);
 app.use('/api/org-logos', orgLogosRoutes);
+app.use('/api/risks', risksRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
