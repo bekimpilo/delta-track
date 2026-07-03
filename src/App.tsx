@@ -28,6 +28,7 @@ import Administration from "./pages/Administration";
 import Organisations from "./pages/Organisations";
 import Documents from "./pages/Documents";
 import Auth from "./pages/Auth";
+import RiskRegister from "./pages/RiskRegister";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,6 +102,7 @@ function AppContent() {
               <Route path="/activity-tracker" element={<ProtectedRoute><Index /></ProtectedRoute>} />
               <Route path="/performance" element={<ProtectedRoute><Performance /></ProtectedRoute>} />
               <Route path="/meetings" element={<ProtectedRoute><Meetings /></ProtectedRoute>} />
+              <Route path="/risk-register" element={<ProtectedRoute><RiskRegister /></ProtectedRoute>} />
               <Route path="/capacity" element={<ProtectedRoute requireAdmin><Capacity /></ProtectedRoute>} />
               <Route path="/organisations" element={<ProtectedRoute><Organisations /></ProtectedRoute>} />
               <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />
