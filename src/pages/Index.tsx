@@ -45,7 +45,9 @@ import { ExcelUpload } from "@/components/ExcelUpload";
 import { ExcelTemplate } from "@/components/ExcelTemplate";
 import { ExcelExport } from "@/components/ExcelExport";
 import { AddProjectDialog } from "@/components/AddProjectDialog";
-import { Plus, Activity, CheckCircle2, Clock, Hourglass } from "lucide-react";
+import { Plus, Activity, CheckCircle2, Clock, Hourglass, BarChart3, Table as TableIcon } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ActivityCharts } from "@/components/ActivityCharts";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import logo from "@/assets/logo.png";
@@ -382,14 +384,33 @@ const Index = () => {
           modifiedByOptions={modifiedByOptions}
         />
 
-        {/* Project Table */}
-        <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
-          <ProjectTable
-            projects={filteredProjects}
-            onUpdateProject={handleUpdateProject}
-            readOnly={!user}
-          />
-        </div>
+        {/* Views */}
+        <Tabs defaultValue="table" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="table" className="gap-2">
+              <TableIcon className="h-4 w-4" />
+              Table
+            </TabsTrigger>
+            <TabsTrigger value="charts" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Visualisation
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="table">
+            <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
+              <ProjectTable
+                projects={filteredProjects}
+                onUpdateProject={handleUpdateProject}
+                readOnly={!user}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="charts">
+            <ActivityCharts projects={filteredProjects} />
+          </TabsContent>
+        </Tabs>
 
         {user && (
           <AddProjectDialog
