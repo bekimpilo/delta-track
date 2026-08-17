@@ -16,6 +16,7 @@ interface AddProjectDialogProps {
 }
 
 export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialogProps) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     activityId: "",
     activityDescription: "",

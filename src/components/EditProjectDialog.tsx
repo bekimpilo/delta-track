@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Project, Status } from "./ProjectTable";
+import { CommentsEditor } from "@/components/CommentsEditor";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface EditProjectDialogProps {
   project: Project;
@@ -38,6 +40,7 @@ export const EditProjectDialog = ({
   onOpenChange,
   onSave,
 }: EditProjectDialogProps) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     activityId: project.activityId,
     activityDescription: project.activityDescription,
