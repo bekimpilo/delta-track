@@ -240,6 +240,13 @@ export const EditProjectDialog = ({
             author={user?.name}
           />
 
+          <DataLinksEditor
+            value={formData.dataLinks}
+            onChange={(dataLinks) => setFormData({ ...formData, dataLinks })}
+          />
+
+
+
           <DialogFooter>
             <Button
               type="button"
