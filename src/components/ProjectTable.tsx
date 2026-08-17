@@ -178,7 +178,18 @@ export const ProjectTable = ({ projects, onUpdateProject, readOnly = false }: Pr
         project={viewingProject}
         open={!!viewingProject}
         onOpenChange={(open) => !open && setViewingProject(null)}
+        canUpdate={
+          !readOnly &&
+          !!viewingProject &&
+          canEditProject(viewingProject.deliveryPartner.split(';').map((p) => p.trim()))
+        }
+        onUpdate={() => {
+          if (!viewingProject) return;
+          setEditingProject(viewingProject);
+          setViewingProject(null);
+        }}
       />
+
 
       {editingProject && (
         <EditProjectDialog

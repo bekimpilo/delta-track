@@ -1,8 +1,9 @@
-import { parseComments } from "@/lib/comments";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { parseComments, formatCommentDate } from "@/lib/comments";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FileText, Hash, Building2, Users, Calendar, MessageSquare } from "lucide-react";
+import { FileText, Hash, Building2, Users, Calendar, MessageSquare, Edit2 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
 import type { Project } from "./ProjectTable";
 
@@ -10,10 +11,13 @@ interface ProjectDetailsDialogProps {
   project: Project | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onUpdate?: () => void;
+  canUpdate?: boolean;
 }
 
-export const ProjectDetailsDialog = ({ project, open, onOpenChange }: ProjectDetailsDialogProps) => {
+export const ProjectDetailsDialog = ({ project, open, onOpenChange, onUpdate, canUpdate = false }: ProjectDetailsDialogProps) => {
   if (!project) return null;
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -129,7 +133,17 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange }: ProjectDet
             </div>
           )}
         </div>
+
+        {canUpdate && onUpdate && (
+          <DialogFooter className="mt-6">
+            <Button onClick={onUpdate}>
+              <Edit2 className="h-4 w-4 mr-2" />
+              Update
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
 };
+
