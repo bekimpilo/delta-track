@@ -85,16 +85,26 @@ export const RiskDialog = ({ risk, open, onOpenChange, onSave, trigger }: Props)
           <DialogTitle>{risk ? "Edit Risk" : "Add Risk"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label>Risk ID</Label>
-              <Input value={form.riskId || ""} onChange={(e) => set("riskId", e.target.value)} placeholder="e.g. R-001" />
+              <Input value={form.riskId || ""} readOnly disabled placeholder="Auto-generated (PF-01)" className="font-mono" />
+            </div>
+            <div className="space-y-2">
+              <Label>Organisation</Label>
+              <Select value={form.organisation || ""} onValueChange={(v) => set("organisation", v)}>
+                <SelectTrigger><SelectValue placeholder="Select organisation" /></SelectTrigger>
+                <SelectContent>
+                  {orgs.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Date Identified</Label>
               <Input type="date" value={form.dateIdentified || ""} onChange={(e) => set("dateIdentified", e.target.value)} />
             </div>
           </div>
+
 
           <div className="space-y-2">
             <Label>Description *</Label>
