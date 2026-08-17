@@ -1,3 +1,4 @@
+import { summarizeComments } from "@/lib/comments";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import * as XLSX from "xlsx";
