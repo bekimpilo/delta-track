@@ -1,3 +1,4 @@
+import { summarizeComments } from "@/lib/comments";
 import { useState, useMemo } from "react";
 import {
   Table,
@@ -145,7 +146,7 @@ export const ProjectTable = ({ projects, onUpdateProject, readOnly = false }: Pr
                   </TableCell>
                   <TableCell>{project.startDate ? new Date(project.startDate).toLocaleDateString() : '-'}</TableCell>
                   <TableCell>{project.endDate ? new Date(project.endDate).toLocaleDateString() : '-'}</TableCell>
-                  <TableCell className="max-w-xs truncate">{project.comments}</TableCell>
+                  <TableCell className="max-w-xs truncate">{summarizeComments(project.comments)}</TableCell>
                   <TableCell className="text-muted-foreground">{project.modifiedBy || '-'}</TableCell>
                   <TableCell className="text-muted-foreground">{project.modifiedAt ? new Date(project.modifiedAt).toLocaleString() : '-'}</TableCell>
                   <TableCell>

@@ -3,10 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Project, Status } from "@/components/ProjectTable";
+import { CommentsEditor } from "@/components/CommentsEditor";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface AddProjectDialogProps {
   open: boolean;
@@ -15,6 +16,7 @@ interface AddProjectDialogProps {
 }
 
 export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialogProps) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     activityId: "",
     activityDescription: "",
@@ -158,16 +160,11 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="comments">Comments</Label>
-            <Textarea
-              id="comments"
-              value={formData.comments}
-              onChange={(e) => setFormData({ ...formData, comments: e.target.value })}
-              placeholder="Add any comments or notes"
-              rows={3}
-            />
-          </div>
+          <CommentsEditor
+            value={formData.comments}
+            onChange={(comments) => setFormData({ ...formData, comments })}
+            author={user?.name}
+          />
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>

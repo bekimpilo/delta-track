@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Project, Status } from "./ProjectTable";
+import { CommentsEditor } from "@/components/CommentsEditor";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface EditProjectDialogProps {
   project: Project;
@@ -38,6 +40,7 @@ export const EditProjectDialog = ({
   onOpenChange,
   onSave,
 }: EditProjectDialogProps) => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     activityId: project.activityId,
     activityDescription: project.activityDescription,
@@ -229,17 +232,11 @@ export const EditProjectDialog = ({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="comments">Comments</Label>
-            <Textarea
-              id="comments"
-              value={formData.comments}
-              onChange={(e) =>
-                setFormData({ ...formData, comments: e.target.value })
-              }
-              rows={3}
-            />
-          </div>
+          <CommentsEditor
+            value={formData.comments}
+            onChange={(comments) => setFormData({ ...formData, comments })}
+            author={user?.name}
+          />
 
           <DialogFooter>
             <Button
