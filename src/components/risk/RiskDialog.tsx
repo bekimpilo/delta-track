@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus } from "lucide-react";
 import { Risk, RISK_STATUSES, scoreLevel } from "./risk-types";
 import { Badge } from "@/components/ui/badge";
+import { api } from "@/services/api";
 
 interface Props {
   risk?: Risk | null;
@@ -20,6 +21,7 @@ interface Props {
 const empty: Risk = {
   id: "",
   riskId: "",
+  organisation: "",
   description: "",
   likelihood: null,
   impact: null,
@@ -37,10 +39,20 @@ export const RiskDialog = ({ risk, open, onOpenChange, onSave, trigger }: Props)
 
   const [form, setForm] = useState<Risk>(empty);
   const [saving, setSaving] = useState(false);
+  const [orgs, setOrgs] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    api
+      .getOrganisations()
+      .then((list) => setOrgs(Array.from(new Set((list || []).map((o: any) => o.name).filter(Boolean))).sort()))
+      .catch(() => setOrgs([]));
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) setForm(risk ? { ...empty, ...risk } : { ...empty });
   }, [isOpen, risk]);
+
 
   const score =
     form.likelihood && form.impact ? Number(form.likelihood) * Number(form.impact) : null;
