@@ -133,7 +133,17 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange, onUpdate, ca
             </div>
           )}
         </div>
+
+        {canUpdate && onUpdate && (
+          <DialogFooter className="mt-6">
+            <Button onClick={onUpdate}>
+              <Edit2 className="h-4 w-4 mr-2" />
+              Update
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );
 };
+
