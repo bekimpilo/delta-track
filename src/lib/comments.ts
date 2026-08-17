@@ -1,4 +1,5 @@
 export interface CommentEntry {
+  /** Date the update applies to (YYYY-MM-DD). Legacy values may hold a period label. */
   period: string;
   text: string;
   author?: string;
@@ -17,7 +18,7 @@ export const parseComments = (raw?: string | null): CommentEntry[] => {
         return parsed
           .filter((e) => e && typeof e === "object")
           .map((e: any) => ({
-            period: String(e.period ?? ""),
+            period: String(e.period ?? e.date ?? ""),
             text: String(e.text ?? ""),
             author: e.author ? String(e.author) : undefined,
             createdAt: e.createdAt ? String(e.createdAt) : undefined,
@@ -36,18 +37,18 @@ export const serializeComments = (entries: CommentEntry[]): string => {
   return clean.length ? JSON.stringify(clean) : "";
 };
 
+/** Display a comment's date; falls back to the raw value for legacy period labels. */
+export const formatCommentDate = (value?: string): string => {
+  if (!value) return "";
+  const parsed = new Date(value);
+  if (!Number.isNaN(parsed.getTime()) && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    return parsed.toLocaleDateString();
+  }
+  return value;
+};
+
 /** Short single-line summary for table cells / exports. */
 export const summarizeComments = (raw?: string | null): string =>
   parseComments(raw)
-    .map((e) => (e.period ? `[${e.period}] ${e.text}` : e.text))
+    .map((e) => (e.period ? `[${formatCommentDate(e.period)}] ${e.text}` : e.text))
     .join(" | ");
-
-/** Quarter options around the current year for the reporting-period picker. */
-export const periodOptions = (): string[] => {
-  const year = new Date().getFullYear();
-  const options: string[] = [];
-  for (let y = year - 2; y <= year + 2; y++) {
-    for (let q = 1; q <= 4; q++) options.push(`Q${q} ${y}`);
-  }
-  return options;
-};
