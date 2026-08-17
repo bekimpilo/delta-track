@@ -9,8 +9,8 @@ const INSERT_SQL = `INSERT INTO indicators (
   activity_id, activity, long_term_outcome, core_indicators, indicator_type, indicator_definition,
   naphs, responsibility, cost_usd, data_source, evidence, year, target, q1, q2, q3, q4, quarter_3,
   annual_performance, comments, baseline_proposal_year, target_year_1, target_year_2, target_year_3,
-  target_year_4, target_year_5, target_year_6, subactivity_id, created_by
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  target_year_4, target_year_5, target_year_6, subactivity_id, data_links, created_by
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
 function insertParams(id, d, userId) {
   return [
@@ -50,6 +50,7 @@ function insertParams(id, d, userId) {
     d.target_year_5 || null,
     d.target_year_6 || null,
     d.subactivity_id || null,
+    d.data_links || null,
     userId || null,
   ];
 }
@@ -135,6 +136,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         target_year_1 = COALESCE(?, target_year_1), target_year_2 = COALESCE(?, target_year_2),
         target_year_3 = COALESCE(?, target_year_3), target_year_4 = COALESCE(?, target_year_4),
         target_year_5 = COALESCE(?, target_year_5), target_year_6 = COALESCE(?, target_year_6),
+        data_links = COALESCE(?, data_links),
         modified_by = ?, modified_at = NOW()
        WHERE id = ?`,
       [d.name, d.description, d.unit, d.country, d.workstream, d.organisation,
@@ -145,6 +147,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
        d.annual_performance ?? null, d.comments || null,
        d.baseline_proposal_year, d.target_year_1, d.target_year_2,
        d.target_year_3, d.target_year_4, d.target_year_5, d.target_year_6,
+       d.data_links ?? null,
        req.user?.id || null, id]
     );
     const [rows] = await pool.execute('SELECT * FROM indicators WHERE id = ?', [id]);
