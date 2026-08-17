@@ -274,6 +274,8 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
               <Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={2} />
             </div>
 
+            <DataLinksEditor value={formData.data_links} onChange={v => update("data_links", v)} />
+
             <div className="flex justify-end gap-2 pt-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
               <Button type="submit" disabled={loading}>

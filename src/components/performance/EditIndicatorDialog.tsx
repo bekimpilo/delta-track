@@ -79,6 +79,7 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
         data_source: formData.data_source || null, unit: formData.unit,
         subactivity_id: formData.subactivity_id || null, description: formData.description || null,
         comments: formData.comments || null,
+        data_links: formData.data_links || null,
         baseline_proposal_year: formData.baseline_proposal_year || null,
         quarter_3: formData.quarter_3 ? Number(formData.quarter_3) : null,
         target_year_1: formData.target_year_1 || null,
@@ -160,6 +161,8 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
               <div className="space-y-2"><Label>Data Source</Label><Input value={formData.data_source} onChange={e => update("data_source", e.target.value)} /></div>
             </div>
             <div className="space-y-2"><Label>Comments</Label><Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={3} /></div>
+
+            <DataLinksEditor value={formData.data_links} onChange={v => update("data_links", v)} />
 
 
             <div className="flex justify-end gap-2 pt-2">

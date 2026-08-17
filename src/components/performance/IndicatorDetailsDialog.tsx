@@ -15,6 +15,7 @@ import {
   Layers,
   Activity,
 } from "lucide-react";
+import { DataLinksList } from "@/components/DataLinksList";
 import type { Indicator } from "./IndicatorsTab";
 
 interface IndicatorDetailsDialogProps {
@@ -150,6 +151,8 @@ export function IndicatorDetailsDialog({
               <Field label="Implementing Entity" value={indicator.implementing_entity} />
               <Field label="Data Source" value={indicator.data_source} />
             </Section>
+
+            <DataLinksList value={(indicator as any).data_links} />
 
             <Section icon={DollarSign} title="Cost">
               <Field
