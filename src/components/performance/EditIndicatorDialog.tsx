@@ -9,6 +9,7 @@ import { api } from "@/services/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DataLinksEditor } from "@/components/DataLinksEditor";
 import type { Indicator } from "./IndicatorsTab";
 
 interface EditIndicatorDialogProps {
@@ -47,6 +48,7 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
       q1: ind.q1?.toString() || "", q2: ind.q2?.toString() || "",
       q3: ind.q3?.toString() || "", q4: ind.q4?.toString() || "",
       evidence: ind.evidence || "",
+      data_links: (ind as any).data_links || "",
     };
   }
 

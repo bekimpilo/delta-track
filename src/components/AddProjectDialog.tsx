@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Project, Status } from "@/components/ProjectTable";
 import { CommentsEditor } from "@/components/CommentsEditor";
+import { DataLinksEditor } from "@/components/DataLinksEditor";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface AddProjectDialogProps {
@@ -28,6 +29,7 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
     startDate: "",
     endDate: "",
     comments: "",
+    dataLinks: "",
   });
 
   const handleSubmit = () => {
@@ -53,6 +55,7 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
       startDate: "",
       endDate: "",
       comments: "",
+      dataLinks: "",
     });
   };
 
@@ -164,6 +167,11 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
             value={formData.comments}
             onChange={(comments) => setFormData({ ...formData, comments })}
             author={user?.name}
+          />
+
+          <DataLinksEditor
+            value={formData.dataLinks}
+            onChange={(dataLinks) => setFormData({ ...formData, dataLinks })}
           />
         </div>
         <DialogFooter>

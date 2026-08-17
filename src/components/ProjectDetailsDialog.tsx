@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { FileText, Hash, Building2, Users, Calendar, MessageSquare, Edit2 } from "lucide-react";
 import { StatusBadge } from "./StatusBadge";
+import { DataLinksList } from "@/components/DataLinksList";
 import type { Project } from "./ProjectTable";
 
 interface ProjectDetailsDialogProps {
@@ -107,6 +108,8 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange, onUpdate, ca
           </div>
 
           <Separator />
+
+          <DataLinksList value={project.dataLinks} />
 
           {/* Comments */}
           {parseComments(project.comments).length > 0 && (

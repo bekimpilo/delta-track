@@ -9,6 +9,7 @@ import { api } from "@/services/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DataLinksEditor } from "@/components/DataLinksEditor";
 
 interface AddIndicatorDialogProps {
   open: boolean;
@@ -25,7 +26,7 @@ const initialFormData = {
   target_year_2: "", target_year_3: "", target_year_4: "",
   target_year_5: "", target_year_6: "", year: "", target: "",
   q1: "", q2: "", q3: "", q4: "", evidence: "", description: "",
-  subactivity_id: "", comments: "",
+  subactivity_id: "", comments: "", data_links: "",
 };
 
 export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicatorDialogProps) {
@@ -74,6 +75,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
         target: formData.target ? Number(formData.target) : null,
         q1, q2, q3, q4, annual_performance,
         evidence: formData.evidence || null,
+        data_links: formData.data_links || null,
       });
 
       toast.success("Indicator created successfully");
