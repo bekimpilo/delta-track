@@ -229,17 +229,11 @@ export const EditProjectDialog = ({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="comments">Comments</Label>
-            <Textarea
-              id="comments"
-              value={formData.comments}
-              onChange={(e) =>
-                setFormData({ ...formData, comments: e.target.value })
-              }
-              rows={3}
-            />
-          </div>
+          <CommentsEditor
+            value={formData.comments}
+            onChange={(comments) => setFormData({ ...formData, comments })}
+            author={user?.name}
+          />
 
           <DialogFooter>
             <Button
