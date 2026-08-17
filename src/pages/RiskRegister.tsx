@@ -90,6 +90,7 @@ const RiskRegister = () => {
       const s = search.toLowerCase();
       return (
         (r.description || "").toLowerCase().includes(s) ||
+        (r.organisation || "").toLowerCase().includes(s) ||
         (r.riskId || "").toLowerCase().includes(s) ||
         (r.owner || "").toLowerCase().includes(s) ||
         (r.mitigation || "").toLowerCase().includes(s)
@@ -167,6 +168,7 @@ const RiskRegister = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-24">Risk ID</TableHead>
+                    <TableHead className="w-40">Organisation</TableHead>
                     <TableHead className="min-w-[240px]">Description</TableHead>
                     <TableHead className="w-20 text-center">L</TableHead>
                     <TableHead className="w-20 text-center">I</TableHead>
@@ -180,15 +182,16 @@ const RiskRegister = () => {
                 </TableHeader>
                 <TableBody>
                   {loading ? (
-                    <TableRow><TableCell colSpan={10} className="text-center py-8 text-muted-foreground">Loading...</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground">Loading...</TableCell></TableRow>
                   ) : filtered.length === 0 ? (
-                    <TableRow><TableCell colSpan={10} className="text-center py-8 text-muted-foreground">No risks found</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={11} className="text-center py-8 text-muted-foreground">No risks found</TableCell></TableRow>
                   ) : filtered.map((r) => {
                     const score = (r.likelihood || 0) * (r.impact || 0) || null;
                     const level = scoreLevel(score);
                     return (
                       <TableRow key={r.id}>
                         <TableCell className="font-mono text-xs">{r.riskId || "—"}</TableCell>
+                        <TableCell className="text-sm">{r.organisation || "—"}</TableCell>
                         <TableCell className="whitespace-pre-wrap text-sm">{r.description}</TableCell>
                         <TableCell className="text-center">{r.likelihood ?? "—"}</TableCell>
                         <TableCell className="text-center">{r.impact ?? "—"}</TableCell>

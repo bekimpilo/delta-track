@@ -7,6 +7,7 @@ const router = express.Router();
 const mapRow = (r) => ({
   id: r.id,
   riskId: r.risk_id || '',
+  organisation: r.organisation || '',
   description: r.description || '',
   likelihood: r.likelihood == null ? null : Number(r.likelihood),
   impact: r.impact == null ? null : Number(r.impact),
@@ -27,8 +28,24 @@ const clampScore = (n) => {
   return Math.max(1, Math.min(5, Math.round(v)));
 };
 
+const RISK_ID_PREFIX = 'PF';
+
+// Generates the next sequential risk ID, e.g. PF-01, PF-02, ...
+const nextRiskId = async (pool) => {
+  const [rows] = await pool.execute(
+    `SELECT risk_id FROM risks WHERE risk_id REGEXP '^${RISK_ID_PREFIX}-[0-9]+$'`
+  );
+  let max = 0;
+  for (const r of rows) {
+    const n = parseInt(String(r.risk_id).split('-')[1], 10);
+    if (Number.isFinite(n) && n > max) max = n;
+  }
+  return `${RISK_ID_PREFIX}-${String(max + 1).padStart(2, '0')}`;
+};
+
 const buildFields = (body) => ({
   risk_id: body.riskId ?? body.risk_id ?? null,
+  organisation: body.organisation ?? body.organization ?? null,
   description: body.description ?? '',
   likelihood: body.likelihood == null || body.likelihood === '' ? null : clampScore(body.likelihood),
   impact: body.impact == null || body.impact === '' ? null : clampScore(body.impact),
@@ -51,6 +68,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
 const insertRisk = async (pool, body, userId) => {
   const f = buildFields(body);
+  if (!f.risk_id) f.risk_id = await nextRiskId(pool);
   const id = body.id || crypto.randomUUID();
   const cols = ['id', ...Object.keys(f), 'created_by'];
   const placeholders = cols.map(() => '?').join(', ');
@@ -62,6 +80,7 @@ const insertRisk = async (pool, body, userId) => {
   const [rows] = await pool.execute('SELECT * FROM risks WHERE id = ?', [id]);
   return mapRow(rows[0]);
 };
+
 
 router.post('/', authenticateToken, async (req, res) => {
   const pool = req.app.locals.pool;

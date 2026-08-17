@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus } from "lucide-react";
 import { Risk, RISK_STATUSES, scoreLevel } from "./risk-types";
 import { Badge } from "@/components/ui/badge";
+import { api } from "@/services/api";
 
 interface Props {
   risk?: Risk | null;
@@ -20,6 +21,7 @@ interface Props {
 const empty: Risk = {
   id: "",
   riskId: "",
+  organisation: "",
   description: "",
   likelihood: null,
   impact: null,
@@ -37,10 +39,20 @@ export const RiskDialog = ({ risk, open, onOpenChange, onSave, trigger }: Props)
 
   const [form, setForm] = useState<Risk>(empty);
   const [saving, setSaving] = useState(false);
+  const [orgs, setOrgs] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    api
+      .getOrganisations()
+      .then((list) => setOrgs(Array.from(new Set((list || []).map((o: any) => o.name).filter(Boolean))).sort()))
+      .catch(() => setOrgs([]));
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) setForm(risk ? { ...empty, ...risk } : { ...empty });
   }, [isOpen, risk]);
+
 
   const score =
     form.likelihood && form.impact ? Number(form.likelihood) * Number(form.impact) : null;
@@ -73,16 +85,26 @@ export const RiskDialog = ({ risk, open, onOpenChange, onSave, trigger }: Props)
           <DialogTitle>{risk ? "Edit Risk" : "Add Risk"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label>Risk ID</Label>
-              <Input value={form.riskId || ""} onChange={(e) => set("riskId", e.target.value)} placeholder="e.g. R-001" />
+              <Input value={form.riskId || ""} readOnly disabled placeholder="Auto-generated (PF-01)" className="font-mono" />
+            </div>
+            <div className="space-y-2">
+              <Label>Organisation</Label>
+              <Select value={form.organisation || ""} onValueChange={(v) => set("organisation", v)}>
+                <SelectTrigger><SelectValue placeholder="Select organisation" /></SelectTrigger>
+                <SelectContent>
+                  {orgs.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-2">
               <Label>Date Identified</Label>
               <Input type="date" value={form.dateIdentified || ""} onChange={(e) => set("dateIdentified", e.target.value)} />
             </div>
           </div>
+
 
           <div className="space-y-2">
             <Label>Description *</Label>

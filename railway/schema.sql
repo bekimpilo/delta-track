@@ -257,6 +257,7 @@ CREATE TABLE IF NOT EXISTS org_logos (
 CREATE TABLE IF NOT EXISTS risks (
   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   risk_id VARCHAR(50) NULL,
+  organisation VARCHAR(255) NULL,
   description TEXT NOT NULL,
   likelihood TINYINT NULL,
   impact TINYINT NULL,
