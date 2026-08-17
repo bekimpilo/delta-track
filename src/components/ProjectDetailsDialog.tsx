@@ -115,14 +115,11 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange }: ProjectDet
                 {parseComments(project.comments).map((entry, index) => (
                   <div key={index} className="rounded-md border border-border bg-card p-3 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      {entry.period && <Badge variant="secondary">{entry.period}</Badge>}
+                      {entry.period && (
+                        <Badge variant="secondary">{formatCommentDate(entry.period)}</Badge>
+                      )}
                       {entry.author && (
                         <span className="text-xs text-muted-foreground">{entry.author}</span>
-                      )}
-                      {entry.createdAt && (
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(entry.createdAt).toLocaleDateString()}
-                        </span>
                       )}
                     </div>
                     <p className="text-sm whitespace-pre-wrap break-words">{entry.text}</p>
