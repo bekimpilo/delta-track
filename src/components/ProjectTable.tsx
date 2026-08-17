@@ -1,3 +1,4 @@
+import { summarizeComments } from "@/lib/comments";
 import { useState, useMemo } from "react";
 import {
   Table,
