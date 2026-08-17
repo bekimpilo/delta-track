@@ -104,14 +104,29 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange }: ProjectDet
           <Separator />
 
           {/* Comments */}
-          {project.comments && (
-            <div className="space-y-2 p-4 rounded-lg bg-muted/30 border border-border">
-              <div className="flex items-start gap-2">
-                <MessageSquare className="h-4 w-4 mt-1 text-muted-foreground" />
-                <div className="flex-1">
-                  <p className="font-semibold text-sm mb-2">Comments</p>
-                  <p className="text-sm text-muted-foreground">{project.comments}</p>
-                </div>
+          {parseComments(project.comments).length > 0 && (
+            <div className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                <p className="font-semibold text-sm">Comments &amp; Updates</p>
+              </div>
+              <div className="space-y-2">
+                {parseComments(project.comments).map((entry, index) => (
+                  <div key={index} className="rounded-md border border-border bg-card p-3 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {entry.period && <Badge variant="secondary">{entry.period}</Badge>}
+                      {entry.author && (
+                        <span className="text-xs text-muted-foreground">{entry.author}</span>
+                      )}
+                      {entry.createdAt && (
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(entry.createdAt).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm whitespace-pre-wrap break-words">{entry.text}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}

@@ -21,7 +21,7 @@ export const ExcelExport = ({ projects }: ExcelExportProps) => {
       "Status": project.status,
       "Start Date": project.startDate,
       "End Date": project.endDate,
-      "Comments": project.comments,
+      "Comments": summarizeComments(project.comments),
     }));
 
     // Create workbook and worksheet
