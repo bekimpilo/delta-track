@@ -9,7 +9,7 @@ export const RiskExcelTemplate = () => {
   const download = () => {
     const data = [
       {
-        "Risk ID": "R-001",
+        "Organisation": "Ministry of Health",
         "Description": "Delayed delivery of training materials",
         "Likelihood": 3,
         "Impact": 4,
@@ -20,7 +20,7 @@ export const RiskExcelTemplate = () => {
       },
     ];
     const ws = XLSX.utils.json_to_sheet(data);
-    ws["!cols"] = [{ wch: 10 }, { wch: 40 }, { wch: 12 }, { wch: 10 }, { wch: 40 }, { wch: 20 }, { wch: 14 }, { wch: 14 }];
+    ws["!cols"] = [{ wch: 24 }, { wch: 40 }, { wch: 12 }, { wch: 10 }, { wch: 40 }, { wch: 20 }, { wch: 14 }, { wch: 14 }];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Risks");
     XLSX.writeFile(wb, "risk_register_template.xlsx");
@@ -68,7 +68,8 @@ export const RiskExcelUpload = ({ onUpload }: UploadProps) => {
 
       const risks: Risk[] = rows.map((r, i) => ({
         id: `${Date.now()}-${i}`,
-        riskId: String(r["Risk ID"] ?? r["risk_id"] ?? "").trim(),
+        riskId: "",
+        organisation: String(r["Organisation"] ?? r["organisation"] ?? "").trim(),
         description: String(r["Description"] ?? r["description"] ?? "").trim(),
         likelihood: num(r["Likelihood"] ?? r["likelihood"]),
         impact: num(r["Impact"] ?? r["impact"]),
