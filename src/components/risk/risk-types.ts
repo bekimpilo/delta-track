@@ -1,6 +1,7 @@
 export interface Risk {
   id: string;
   riskId?: string;
+  organisation?: string;
   description: string;
   likelihood?: number | null;
   impact?: number | null;
