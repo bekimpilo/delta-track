@@ -382,14 +382,33 @@ const Index = () => {
           modifiedByOptions={modifiedByOptions}
         />
 
-        {/* Project Table */}
-        <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
-          <ProjectTable
-            projects={filteredProjects}
-            onUpdateProject={handleUpdateProject}
-            readOnly={!user}
-          />
-        </div>
+        {/* Views */}
+        <Tabs defaultValue="table" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="table" className="gap-2">
+              <TableIcon className="h-4 w-4" />
+              Table
+            </TabsTrigger>
+            <TabsTrigger value="charts" className="gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Visualisation
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="table">
+            <div className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden">
+              <ProjectTable
+                projects={filteredProjects}
+                onUpdateProject={handleUpdateProject}
+                readOnly={!user}
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="charts">
+            <ActivityCharts projects={filteredProjects} />
+          </TabsContent>
+        </Tabs>
 
         {user && (
           <AddProjectDialog
