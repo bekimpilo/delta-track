@@ -49,6 +49,7 @@ export interface Indicator {
   target_year_4: string | null;
   target_year_5: string | null;
   target_year_6: string | null;
+  data_links?: string | null;
 }
 
 interface IndicatorsTabProps {

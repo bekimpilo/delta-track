@@ -9,6 +9,7 @@ import { api } from "@/services/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DataLinksEditor } from "@/components/DataLinksEditor";
 import type { Indicator } from "./IndicatorsTab";
 
 interface EditIndicatorDialogProps {
@@ -47,6 +48,7 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
       q1: ind.q1?.toString() || "", q2: ind.q2?.toString() || "",
       q3: ind.q3?.toString() || "", q4: ind.q4?.toString() || "",
       evidence: ind.evidence || "",
+      data_links: (ind as any).data_links || "",
     };
   }
 
@@ -77,6 +79,7 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
         data_source: formData.data_source || null, unit: formData.unit,
         subactivity_id: formData.subactivity_id || null, description: formData.description || null,
         comments: formData.comments || null,
+        data_links: formData.data_links || null,
         baseline_proposal_year: formData.baseline_proposal_year || null,
         quarter_3: formData.quarter_3 ? Number(formData.quarter_3) : null,
         target_year_1: formData.target_year_1 || null,
@@ -158,6 +161,8 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
               <div className="space-y-2"><Label>Data Source</Label><Input value={formData.data_source} onChange={e => update("data_source", e.target.value)} /></div>
             </div>
             <div className="space-y-2"><Label>Comments</Label><Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={3} /></div>
+
+            <DataLinksEditor value={formData.data_links} onChange={v => update("data_links", v)} />
 
 
             <div className="flex justify-end gap-2 pt-2">

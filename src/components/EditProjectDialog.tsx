@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import type { Project, Status } from "./ProjectTable";
 import { CommentsEditor } from "@/components/CommentsEditor";
+import { DataLinksEditor } from "@/components/DataLinksEditor";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface EditProjectDialogProps {
@@ -52,6 +53,7 @@ export const EditProjectDialog = ({
     startDate: project.startDate,
     endDate: project.endDate,
     comments: project.comments,
+    dataLinks: project.dataLinks ?? "",
   });
 
   const [startDate, setStartDate] = useState<Date | undefined>(
@@ -237,6 +239,13 @@ export const EditProjectDialog = ({
             onChange={(comments) => setFormData({ ...formData, comments })}
             author={user?.name}
           />
+
+          <DataLinksEditor
+            value={formData.dataLinks}
+            onChange={(dataLinks) => setFormData({ ...formData, dataLinks })}
+          />
+
+
 
           <DialogFooter>
             <Button
