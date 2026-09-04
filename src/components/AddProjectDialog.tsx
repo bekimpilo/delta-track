@@ -185,7 +185,10 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
 
           <DataLinksEditor
             value={formData.dataLinks}
-            onChange={(dataLinks) => setFormData({ ...formData, dataLinks })}
+            onChange={(dataLinks) => {
+              console.log("Parent onChange called with:", dataLinks);
+              setFormData({ ...formData, dataLinks });
+            }}
           />
         </div>
         <DialogFooter>
