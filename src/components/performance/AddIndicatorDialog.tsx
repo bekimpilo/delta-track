@@ -22,6 +22,8 @@ const initialFormData = {
   core_indicators: "", workstream: "", indicator_type: "", name: "",
   indicator_definition: "", naphs: "", responsibility: "", organisation: "",
   cost_usd: "", implementing_entity: "", comments: "", data_links: "",
+  baseline_proposal_year: "", target_year_1: "", target_year_2: "",
+  target_year_3: "", target_year_4: "", target_year_5: "", target_year_6: "",
 };
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
