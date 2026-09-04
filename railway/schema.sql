@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS projects (
   start_date DATE NULL,
   end_date DATE NULL,
   comments TEXT NULL,
+  challenges TEXT NULL,
   data_links TEXT NULL,
   created_by CHAR(36) NULL,
   modified_by CHAR(36) NULL,

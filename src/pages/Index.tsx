@@ -23,6 +23,7 @@ const fromApi = (r: any): Project => ({
   startDate: r.start_date ? String(r.start_date).slice(0, 10) : "",
   endDate: r.end_date ? String(r.end_date).slice(0, 10) : "",
   comments: r.comments ?? "",
+  challenges: r.challenges ?? "",
   dataLinks: r.data_links ?? "",
   modifiedBy: r.modifiedBy ?? r.modified_by_name ?? undefined,
   modifiedAt: r.modifiedAt ?? r.modified_at ?? undefined,
@@ -39,6 +40,7 @@ const toApi = (p: Partial<Project>) => ({
   start_date: p.startDate || null,
   end_date: p.endDate || null,
   comments: p.comments ?? null,
+  challenges: p.challenges ?? null,
   data_links: p.dataLinks ?? null,
 });
 import { ProjectTable, type Project } from "@/components/ProjectTable";
