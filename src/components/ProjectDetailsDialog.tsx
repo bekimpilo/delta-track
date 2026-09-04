@@ -109,18 +109,6 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange, onUpdate, ca
 
           <Separator />
 
-          {project.challenges && project.challenges.trim() !== "" && (
-            <div className="space-y-2 p-4 rounded-lg bg-muted/30 border border-border">
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-                <p className="font-semibold text-sm">Challenges</p>
-              </div>
-              <p className="text-sm whitespace-pre-wrap break-words">{project.challenges}</p>
-            </div>
-          )}
-
-          <DataLinksList value={project.dataLinks} />
-
           {/* Comments */}
           {parseComments(project.comments).length > 0 && (
             <div className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border">
@@ -145,6 +133,18 @@ export const ProjectDetailsDialog = ({ project, open, onOpenChange, onUpdate, ca
               </div>
             </div>
           )}
+
+          {project.challenges && project.challenges.trim() !== "" && (
+            <div className="space-y-2 p-4 rounded-lg bg-muted/30 border border-border">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                <p className="font-semibold text-sm">Challenges</p>
+              </div>
+              <p className="text-sm whitespace-pre-wrap break-words">{project.challenges}</p>
+            </div>
+          )}
+
+          <DataLinksList value={project.dataLinks} />
         </div>
 
         {canUpdate && onUpdate && (
