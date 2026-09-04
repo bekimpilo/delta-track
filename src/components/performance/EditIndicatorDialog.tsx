@@ -165,6 +165,18 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
               <div className="space-y-2"><Label>Budget US$</Label><Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} /></div>
             </div>
 
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Baseline &amp; Targets</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><Label>Baseline / Proposal Year</Label><Input value={formData.baseline_proposal_year} onChange={e => update("baseline_proposal_year", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 1</Label><Input value={formData.target_year_1} onChange={e => update("target_year_1", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 2</Label><Input value={formData.target_year_2} onChange={e => update("target_year_2", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 3</Label><Input value={formData.target_year_3} onChange={e => update("target_year_3", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 4</Label><Input value={formData.target_year_4} onChange={e => update("target_year_4", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 5</Label><Input value={formData.target_year_5} onChange={e => update("target_year_5", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 6</Label><Input value={formData.target_year_6} onChange={e => update("target_year_6", e.target.value)} /></div>
+            </div>
+
+
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Notes & Links</p>
             <div className="space-y-2"><Label>Comments</Label><Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={3} /></div>
 
