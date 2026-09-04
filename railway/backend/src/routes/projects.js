@@ -30,7 +30,7 @@ router.post('/', authenticateToken, async (req, res) => {
   const pool = req.app.locals.pool;
   const {
     activity_id, activity_description, sub_activity_id, sub_activity_description,
-    implementing_entity, delivery_partner, status, start_date, end_date, comments, data_links,
+    implementing_entity, delivery_partner, status, start_date, end_date, comments, challenges, data_links,
   } = req.body;
   const id = crypto.randomUUID();
 
@@ -38,15 +38,15 @@ router.post('/', authenticateToken, async (req, res) => {
     await pool.execute(
       `INSERT INTO projects (
          id, activity_id, activity_description, sub_activity_id, sub_activity_description,
-         implementing_entity, delivery_partner, status, start_date, end_date, comments, data_links, created_by
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         implementing_entity, delivery_partner, status, start_date, end_date, comments, challenges, data_links, created_by
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         activity_id || null, activity_description || null,
         sub_activity_id || null, sub_activity_description || null,
         implementing_entity || null, delivery_partner || null,
         status || 'Not Yet Started', start_date || null, end_date || null,
-        comments || null, data_links || null, req.user.id,
+        comments || null, challenges || null, data_links || null, req.user.id,
       ]
     );
     const [rows] = await pool.execute('SELECT * FROM projects WHERE id = ?', [id]);
@@ -62,7 +62,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   const {
     activity_id, activity_description, sub_activity_id, sub_activity_description,
-    implementing_entity, delivery_partner, status, start_date, end_date, comments, data_links,
+    implementing_entity, delivery_partner, status, start_date, end_date, comments, challenges, data_links,
   } = req.body;
 
   try {
@@ -78,6 +78,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
          start_date = COALESCE(?, start_date),
          end_date = COALESCE(?, end_date),
          comments = COALESCE(?, comments),
+         challenges = COALESCE(?, challenges),
          data_links = COALESCE(?, data_links),
          modified_by = ?, modified_at = NOW()
        WHERE id = ?`,
@@ -86,7 +87,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         sub_activity_id ?? null, sub_activity_description ?? null,
         implementing_entity ?? null, delivery_partner ?? null,
         status ?? null, start_date ?? null, end_date ?? null,
-        comments ?? null, data_links ?? null, req.user.id, id,
+        comments ?? null, challenges ?? null, data_links ?? null, req.user.id, id,
       ]
     );
     const [rows] = await pool.execute(

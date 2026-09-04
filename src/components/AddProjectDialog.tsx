@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Project, Status } from "@/components/ProjectTable";
@@ -29,6 +30,7 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
     startDate: "",
     endDate: "",
     comments: "",
+    challenges: "",
     dataLinks: "",
   });
 
@@ -55,6 +57,7 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
       startDate: "",
       endDate: "",
       comments: "",
+      challenges: "",
       dataLinks: "",
     });
   };
@@ -168,6 +171,17 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
             onChange={(comments) => setFormData({ ...formData, comments })}
             author={user?.name}
           />
+
+          <div className="space-y-2">
+            <Label htmlFor="challenges">Challenges</Label>
+            <Textarea
+              id="challenges"
+              value={formData.challenges}
+              onChange={(e) => setFormData({ ...formData, challenges: e.target.value })}
+              placeholder="Describe any challenges encountered"
+              rows={3}
+            />
+          </div>
 
           <DataLinksEditor
             value={formData.dataLinks}

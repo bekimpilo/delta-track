@@ -30,6 +30,7 @@ export interface Project {
   startDate: string;
   endDate: string;
   comments: string;
+  challenges?: string;
   dataLinks?: string;
   modifiedBy?: string;
   modifiedAt?: string;
