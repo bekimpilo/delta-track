@@ -57,6 +57,7 @@ export const AddProjectDialog = ({ open, onOpenChange, onAdd }: AddProjectDialog
       startDate: "",
       endDate: "",
       comments: "",
+      challenges: "",
       dataLinks: "",
     });
   };
