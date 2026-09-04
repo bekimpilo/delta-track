@@ -53,6 +53,7 @@ export const EditProjectDialog = ({
     startDate: project.startDate,
     endDate: project.endDate,
     comments: project.comments,
+    challenges: project.challenges ?? "",
     dataLinks: project.dataLinks ?? "",
   });
 
@@ -239,6 +240,17 @@ export const EditProjectDialog = ({
             onChange={(comments) => setFormData({ ...formData, comments })}
             author={user?.name}
           />
+
+          <div className="space-y-2">
+            <Label htmlFor="challenges">Challenges</Label>
+            <Textarea
+              id="challenges"
+              value={formData.challenges}
+              onChange={(e) => setFormData({ ...formData, challenges: e.target.value })}
+              placeholder="Describe any challenges encountered"
+              rows={3}
+            />
+          </div>
 
           <DataLinksEditor
             value={formData.dataLinks}
