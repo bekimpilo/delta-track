@@ -19,8 +19,7 @@ export const parseDataLinks = (raw?: string | null): DataLink[] => {
             url: String(e.url ?? "").trim(),
             source: String(e.source ?? "").trim(),
             description: e.description ? String(e.description) : undefined,
-          }))
-          .filter((e) => e.url || e.source);
+          }));
       }
     } catch {
       // fall through to legacy handling
