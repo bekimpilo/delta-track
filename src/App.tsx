@@ -29,6 +29,7 @@ import Organisations from "./pages/Organisations";
 import Documents from "./pages/Documents";
 import Auth from "./pages/Auth";
 import RiskRegister from "./pages/RiskRegister";
+import MEActivityTracker from "./pages/MEActivityTracker";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -103,6 +104,7 @@ function AppContent() {
               <Route path="/performance" element={<ProtectedRoute><Performance /></ProtectedRoute>} />
               <Route path="/meetings" element={<ProtectedRoute><Meetings /></ProtectedRoute>} />
               <Route path="/risk-register" element={<ProtectedRoute><RiskRegister /></ProtectedRoute>} />
+              <Route path="/me-activity-tracker" element={<ProtectedRoute requireAdmin><MEActivityTracker /></ProtectedRoute>} />
               <Route path="/capacity" element={<ProtectedRoute requireAdmin><Capacity /></ProtectedRoute>} />
               <Route path="/organisations" element={<ProtectedRoute><Organisations /></ProtectedRoute>} />
               <Route path="/users" element={<ProtectedRoute><Users /></ProtectedRoute>} />

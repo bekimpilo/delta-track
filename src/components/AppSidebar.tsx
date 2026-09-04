@@ -1,4 +1,4 @@
-import { Home, Calendar, Users, LogOut, Building2, TrendingUp, Settings, BarChart3, FileText, GraduationCap, ShieldAlert } from "lucide-react";
+import { Home, Calendar, Users, LogOut, Building2, TrendingUp, Settings, BarChart3, FileText, GraduationCap, ShieldAlert, ClipboardList } from "lucide-react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -25,6 +25,7 @@ const items = [
 ];
 
 const adminItems = [
+  { title: "M&E Activity Tracker", url: "/me-activity-tracker", icon: ClipboardList },
   { title: "Capacity Tracker", url: "/capacity", icon: GraduationCap },
   { title: "Documents", url: "/documents", icon: FileText },
   { title: "Users", url: "/users", icon: Users },

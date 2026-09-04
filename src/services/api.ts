@@ -1014,6 +1014,69 @@ class ApiService {
     if (!response.ok && response.status !== 207) throw new Error('Failed to bulk upload risks');
     return response.json();
   }
+
+  // ==================== M&E Activity Tracker (admin only) ====================
+  async getMEActivities(): Promise<any[]> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_me_activities');
+      return stored ? JSON.parse(stored) : [];
+    }
+    const response = await fetch(`${BASE_URL}/me-activities`, { headers: this.getAuthHeaders() });
+    if (!response.ok) throw new Error('Failed to fetch M&E activities');
+    return response.json();
+  }
+
+  async createMEActivity(data: any): Promise<any> {
+    if (MOCK_MODE) {
+      const record = { ...data, id: crypto.randomUUID() };
+      const stored = localStorage.getItem('mock_me_activities');
+      const all = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('mock_me_activities', JSON.stringify([record, ...all]));
+      return record;
+    }
+    const response = await fetch(`${BASE_URL}/me-activities`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to create M&E activity');
+    return response.json();
+  }
+
+  async updateMEActivity(id: string, data: any): Promise<any> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_me_activities');
+      const all = stored ? JSON.parse(stored) : [];
+      const idx = all.findIndex((r: any) => r.id === id);
+      if (idx !== -1) {
+        all[idx] = { ...all[idx], ...data, id };
+        localStorage.setItem('mock_me_activities', JSON.stringify(all));
+        return all[idx];
+      }
+      return { ...data, id };
+    }
+    const response = await fetch(`${BASE_URL}/me-activities/${id}`, {
+      method: 'PUT',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error('Failed to update M&E activity');
+    return response.json();
+  }
+
+  async deleteMEActivity(id: string): Promise<void> {
+    if (MOCK_MODE) {
+      const stored = localStorage.getItem('mock_me_activities');
+      const all = stored ? JSON.parse(stored) : [];
+      localStorage.setItem('mock_me_activities', JSON.stringify(all.filter((r: any) => r.id !== id)));
+      return;
+    }
+    const response = await fetch(`${BASE_URL}/me-activities/${id}`, {
+      method: 'DELETE',
+      headers: this.getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error('Failed to delete M&E activity');
+  }
 }
 
 export const api = new ApiService();
