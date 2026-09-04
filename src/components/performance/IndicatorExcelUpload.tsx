@@ -60,7 +60,7 @@ export const IndicatorExcelUpload = ({ onSuccess }: IndicatorExcelUploadProps) =
           naphs: toStr(row["NAPHS (Yes/No)"] ?? row["NAPHS"] ?? row["naphs"]),
           responsibility,
           organisation: toStr(row["Delivery Partner"] ?? row["Organisation Name"] ?? row["Organisation name"] ?? row["organisation"]),
-          cost_usd: toNum(row["Cost US$"] ?? row["Cost USD"]),
+          cost_usd: toNum(row["Budget US$"] ?? row["Budget USD"] ?? row["Cost US$"] ?? row["Cost USD"]),
           implementing_entity: toStr(row["Implementing Entity"] ?? row["Implementing entity"]),
           data_source: toStr(row["Data Source"] ?? row["Data source"]),
           unit: toStr(row["Unit"] ?? row["unit"]) ?? "Number",

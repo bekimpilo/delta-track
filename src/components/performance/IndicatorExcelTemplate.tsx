@@ -21,7 +21,7 @@ export const IndicatorExcelTemplate = () => {
         "Delivery Partner": "UNDP",
         "Implementing Entity": "Ministry of Health",
         "Data Source": "Training records",
-        "Cost US$": 50000,
+        "Budget US$": 50000,
         "Baseline Proposal Year": "2025",
         "Target Year 1": "100 trained",
         "Target Year 2": "150 trained",
