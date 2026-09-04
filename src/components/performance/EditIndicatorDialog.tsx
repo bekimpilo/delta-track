@@ -114,6 +114,7 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
         </DialogHeader>
         <ScrollArea className="max-h-[70vh] pr-4">
           <form onSubmit={handleSubmit} className="space-y-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Activity Context</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Country</Label><Input value={formData.country} onChange={e => update("country", e.target.value)} /></div>
               <div className="space-y-2"><Label>Activity ID</Label><Input value={formData.activity_id} onChange={e => update("activity_id", e.target.value)} /></div>
@@ -124,6 +125,8 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
               <div className="space-y-2"><Label>Core Indicator</Label><Input value={formData.core_indicators} onChange={e => update("core_indicators", e.target.value)} /></div>
               <div className="space-y-2"><Label>Workstream</Label><Input value={formData.workstream} onChange={e => update("workstream", e.target.value)} /></div>
             </div>
+
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Indicator</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Indicator Type</Label><Input value={formData.indicator_type} onChange={e => update("indicator_type", e.target.value)} /></div>
               <div className="space-y-2"><Label>Indicator Name *</Label><Input value={formData.name} onChange={e => update("name", e.target.value)} required /></div>
@@ -152,17 +155,21 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
                 </Select>
               </div>
             </div>
+
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Partners & Cost</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Delivery Partner</Label><Input value={formData.organisation} onChange={e => update("organisation", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Cost US$</Label><Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Implementing Entity</Label><Input value={formData.implementing_entity} onChange={e => update("implementing_entity", e.target.value)} /></div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>Implementing Entity</Label><Input value={formData.implementing_entity} onChange={e => update("implementing_entity", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Data Source</Label><Input value={formData.data_source} onChange={e => update("data_source", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Cost US$</Label><Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} /></div>
             </div>
+
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Notes & Links</p>
             <div className="space-y-2"><Label>Comments</Label><Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={3} /></div>
 
             <DataLinksEditor value={formData.data_links} onChange={v => update("data_links", v)} />
+
 
 
             <div className="flex justify-end gap-2 pt-2">
