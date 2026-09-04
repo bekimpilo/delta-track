@@ -350,7 +350,7 @@ function IndicatorsAdmin() {
               </div>
               <div><Label>Responsibility</Label><Input value={form.responsibility} onChange={e => setForm({...form, responsibility: e.target.value})} /></div>
               <div><Label>Organisation</Label><Input value={form.organisation} onChange={e => setForm({...form, organisation: e.target.value})} /></div>
-              <div><Label>Cost (USD)</Label><Input type="number" value={form.cost_usd} onChange={e => setForm({...form, cost_usd: e.target.value})} /></div>
+              <div><Label>Budget (USD)</Label><Input type="number" value={form.cost_usd} onChange={e => setForm({...form, cost_usd: e.target.value})} /></div>
               <div><Label>Implementing Entity</Label><Input value={form.implementing_entity} onChange={e => setForm({...form, implementing_entity: e.target.value})} /></div>
               <div><Label>Data Source</Label><Input value={form.data_source} onChange={e => setForm({...form, data_source: e.target.value})} /></div>
               <div><Label>Baseline Proposal Year</Label><Input type="number" value={form.baseline_proposal_year} onChange={e => setForm({...form, baseline_proposal_year: e.target.value})} /></div>

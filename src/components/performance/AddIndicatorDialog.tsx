@@ -156,7 +156,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
               </div>
             </div>
 
-            <SectionTitle>Partners & Cost</SectionTitle>
+            <SectionTitle>Partners & Budget</SectionTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Delivery Partner</Label>
@@ -170,7 +170,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Cost US$</Label>
+                <Label>Budget US$</Label>
                 <Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} placeholder="e.g., 50000" />
               </div>
             </div>

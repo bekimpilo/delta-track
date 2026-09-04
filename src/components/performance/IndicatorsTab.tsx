@@ -187,7 +187,7 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
       "Delivery Partner": ind.organisation || "",
       "Implementing Entity": ind.implementing_entity || "",
       "Data Source": ind.data_source || "",
-      "Cost US$": ind.cost_usd ?? "",
+      "Budget US$": ind.cost_usd ?? "",
       "Baseline Proposal Year": ind.baseline_proposal_year ?? "",
       "Target Year 1": ind.target_year_1 ?? "",
       "Target Year 2": ind.target_year_2 ?? "",
@@ -368,7 +368,7 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
               <TableHead>Delivery Partner</TableHead>
               <TableHead>Implementing Entity</TableHead>
               <TableHead>Data Source</TableHead>
-              <TableHead>Cost US$</TableHead>
+              <TableHead>Budget US$</TableHead>
               <TableHead>Annual Perf.</TableHead>
               {user && <TableHead className="text-right">Actions</TableHead>}
             </TableRow>

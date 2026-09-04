@@ -156,13 +156,13 @@ export function EditIndicatorDialog({ indicator, open, onOpenChange, onSuccess }
               </div>
             </div>
 
-            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Partners & Cost</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Partners & Budget</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2"><Label>Delivery Partner</Label><Input value={formData.organisation} onChange={e => update("organisation", e.target.value)} /></div>
               <div className="space-y-2"><Label>Implementing Entity</Label><Input value={formData.implementing_entity} onChange={e => update("implementing_entity", e.target.value)} /></div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>Cost US$</Label><Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Budget US$</Label><Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} /></div>
             </div>
 
             <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">Notes & Links</p>

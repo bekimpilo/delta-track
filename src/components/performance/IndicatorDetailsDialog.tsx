@@ -153,9 +153,9 @@ export function IndicatorDetailsDialog({
 
             <DataLinksList value={(indicator as any).data_links} />
 
-            <Section icon={DollarSign} title="Cost">
+            <Section icon={DollarSign} title="Budget">
               <Field
-                label="Cost (US$)"
+                label="Budget (US$)"
                 value={
                   indicator.cost_usd != null
                     ? `$${Number(indicator.cost_usd).toLocaleString()}`
