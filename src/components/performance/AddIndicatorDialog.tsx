@@ -60,6 +60,13 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
         implementing_entity: formData.implementing_entity || null,
         comments: formData.comments || null,
         data_links: formData.data_links || null,
+        baseline_proposal_year: formData.baseline_proposal_year || null,
+        target_year_1: formData.target_year_1 || null,
+        target_year_2: formData.target_year_2 || null,
+        target_year_3: formData.target_year_3 || null,
+        target_year_4: formData.target_year_4 || null,
+        target_year_5: formData.target_year_5 || null,
+        target_year_6: formData.target_year_6 || null,
       });
 
       toast.success("Indicator created successfully");
