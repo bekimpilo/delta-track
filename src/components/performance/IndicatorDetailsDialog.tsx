@@ -149,7 +149,6 @@ export function IndicatorDetailsDialog({
               />
               <Field label="Delivery Partner" value={indicator.organisation} />
               <Field label="Implementing Entity" value={indicator.implementing_entity} />
-              <Field label="Data Source" value={indicator.data_source} />
             </Section>
 
             <DataLinksList value={(indicator as any).data_links} />
