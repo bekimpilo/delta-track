@@ -21,10 +21,8 @@ export const DataLinksEditor = ({ value, onChange, label = "Data Source Links" }
   const updateLink = (index: number, patch: Partial<DataLink>) =>
     commit(links.map((link, i) => (i === index ? { ...link, ...patch } : link)));
 
-  const addLink = () => {
-    console.log("addLink clicked, current links:", links);
+  const addLink = () =>
     commit([...links, { url: "", source: "", description: "" }]);
-  };
 
   return (
     <div className="space-y-4">
