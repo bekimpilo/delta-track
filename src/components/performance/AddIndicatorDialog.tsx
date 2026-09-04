@@ -184,6 +184,18 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
               </div>
             </div>
 
+            <SectionTitle>Baseline &amp; Targets</SectionTitle>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><Label>Baseline / Proposal Year</Label><Input value={formData.baseline_proposal_year} onChange={e => update("baseline_proposal_year", e.target.value)} placeholder="e.g., 120" /></div>
+              <div className="space-y-2"><Label>Target Year 1</Label><Input value={formData.target_year_1} onChange={e => update("target_year_1", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 2</Label><Input value={formData.target_year_2} onChange={e => update("target_year_2", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 3</Label><Input value={formData.target_year_3} onChange={e => update("target_year_3", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 4</Label><Input value={formData.target_year_4} onChange={e => update("target_year_4", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 5</Label><Input value={formData.target_year_5} onChange={e => update("target_year_5", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Target Year 6</Label><Input value={formData.target_year_6} onChange={e => update("target_year_6", e.target.value)} /></div>
+            </div>
+
+
             <SectionTitle>Notes & Links</SectionTitle>
             <div className="space-y-2">
               <Label>Comments</Label>
