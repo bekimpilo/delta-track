@@ -8,7 +8,7 @@ interface DataLinksListProps {
 }
 
 export const DataLinksList = ({ value, title = "Data Source Links" }: DataLinksListProps) => {
-  const links = parseDataLinks(value);
+  const links = parseDataLinks(value).filter((l) => l.url.trim() !== "" || l.source.trim() !== "");
   if (links.length === 0) return null;
 
   return (
