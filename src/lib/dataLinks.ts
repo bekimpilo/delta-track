@@ -33,8 +33,7 @@ export const parseDataLinks = (raw?: string | null): DataLink[] => {
 };
 
 export const serializeDataLinks = (links: DataLink[]): string => {
-  const clean = links.filter((l) => l.url.trim() !== "" || l.source.trim() !== "");
-  return clean.length ? JSON.stringify(clean) : "";
+  return links.length ? JSON.stringify(links) : "";
 };
 
 export const summarizeDataLinks = (raw?: string | null): string =>
