@@ -8,34 +8,43 @@ interface DataLinksListProps {
 }
 
 export const DataLinksList = ({ value, title = "Data Source Links" }: DataLinksListProps) => {
-  const links = parseDataLinks(value);
+  const links = parseDataLinks(value).filter((l) => l.url.trim() !== "" || l.source.trim() !== "");
   if (links.length === 0) return null;
 
   return (
-    <div className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border">
+    <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Link2 className="h-4 w-4 text-muted-foreground" />
-        <p className="font-semibold text-sm">{title}</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{title}</p>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-3">
         {links.map((link, index) => (
-          <div key={index} className="rounded-md border border-border bg-card p-3 space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              {link.source && <Badge variant="secondary">{link.source}</Badge>}
+          <div
+            key={index}
+            className="rounded-xl border border-border bg-card p-5 shadow-sm"
+          >
+            <div className="flex flex-wrap items-start gap-2 mb-2">
+              {link.source && (
+                <Badge variant="secondary" className="text-[11px]">
+                  {link.source}
+                </Badge>
+              )}
               {link.url && (
                 <a
                   href={normalizeUrl(link.url)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-primary underline inline-flex items-center gap-1 break-all"
+                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline break-all font-medium"
                 >
                   {link.url}
-                  <ExternalLink className="h-3 w-3 shrink-0" />
+                  <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                 </a>
               )}
             </div>
             {link.description && (
-              <p className="text-sm text-muted-foreground whitespace-pre-wrap break-words">{link.description}</p>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap break-words">
+                {link.description}
+              </p>
             )}
           </div>
         ))}

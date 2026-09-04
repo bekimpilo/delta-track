@@ -19,8 +19,7 @@ export const parseDataLinks = (raw?: string | null): DataLink[] => {
             url: String(e.url ?? "").trim(),
             source: String(e.source ?? "").trim(),
             description: e.description ? String(e.description) : undefined,
-          }))
-          .filter((e) => e.url || e.source);
+          }));
       }
     } catch {
       // fall through to legacy handling
@@ -34,8 +33,7 @@ export const parseDataLinks = (raw?: string | null): DataLink[] => {
 };
 
 export const serializeDataLinks = (links: DataLink[]): string => {
-  const clean = links.filter((l) => l.url.trim() !== "" || l.source.trim() !== "");
-  return clean.length ? JSON.stringify(clean) : "";
+  return links.length ? JSON.stringify(links) : "";
 };
 
 export const summarizeDataLinks = (raw?: string | null): string =>
