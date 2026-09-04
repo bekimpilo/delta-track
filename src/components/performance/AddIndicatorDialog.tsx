@@ -21,13 +21,16 @@ const initialFormData = {
   country: "", activity_id: "", activity: "", long_term_outcome: "",
   core_indicators: "", workstream: "", indicator_type: "", name: "",
   indicator_definition: "", naphs: "", responsibility: "", organisation: "",
-  cost_usd: "", implementing_entity: "", data_source: "", unit: "",
-  baseline_proposal_year: "", target_year_1: "",
-  target_year_2: "", target_year_3: "", target_year_4: "",
-  target_year_5: "", target_year_6: "", year: "", target: "",
-  q1: "", q2: "", q3: "", q4: "", evidence: "", description: "",
-  subactivity_id: "", comments: "", data_links: "",
+  cost_usd: "", implementing_entity: "", comments: "", data_links: "",
 };
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground pt-2 border-t border-border">
+      {children}
+    </p>
+  );
+}
 
 export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicatorDialogProps) {
   const [loading, setLoading] = useState(false);
@@ -38,12 +41,6 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
     setLoading(true);
 
     try {
-      const q1 = formData.q1 ? Number(formData.q1) : null;
-      const q2 = formData.q2 ? Number(formData.q2) : null;
-      const q3 = formData.q3 ? Number(formData.q3) : null;
-      const q4 = formData.q4 ? Number(formData.q4) : null;
-      const annual_performance = [q1, q2, q3, q4].filter(v => v !== null).reduce((a, b) => a + b, 0) || null;
-
       await api.createIndicator({
         country: formData.country || null,
         activity_id: formData.activity_id || null,
@@ -59,22 +56,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
         organisation: formData.organisation || null,
         cost_usd: formData.cost_usd ? Number(formData.cost_usd) : null,
         implementing_entity: formData.implementing_entity || null,
-        data_source: formData.data_source || null,
-        unit: formData.unit || "Number",
-        subactivity_id: formData.subactivity_id || null,
-        description: formData.description || null,
         comments: formData.comments || null,
-        baseline_proposal_year: formData.baseline_proposal_year || null,
-        target_year_1: formData.target_year_1 || null,
-        target_year_2: formData.target_year_2 || null,
-        target_year_3: formData.target_year_3 || null,
-        target_year_4: formData.target_year_4 || null,
-        target_year_5: formData.target_year_5 || null,
-        target_year_6: formData.target_year_6 || null,
-        year: formData.year ? Number(formData.year) : null,
-        target: formData.target ? Number(formData.target) : null,
-        q1, q2, q3, q4, annual_performance,
-        evidence: formData.evidence || null,
         data_links: formData.data_links || null,
       });
 
@@ -100,6 +82,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
         </DialogHeader>
         <ScrollArea className="max-h-[70vh] pr-4">
           <form onSubmit={handleSubmit} className="space-y-4">
+            <SectionTitle>Activity Context</SectionTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Country</Label>
@@ -132,6 +115,7 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
               </div>
             </div>
 
+            <SectionTitle>Indicator</SectionTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Indicator Type</Label>
@@ -172,103 +156,26 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
               </div>
             </div>
 
+            <SectionTitle>Partners & Cost</SectionTitle>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Delivery Partner</Label>
                 <Input value={formData.organisation} onChange={e => update("organisation", e.target.value)} placeholder="e.g., UNDP" />
               </div>
               <div className="space-y-2">
+                <Label>Implementing Entity</Label>
+                <Input value={formData.implementing_entity} onChange={e => update("implementing_entity", e.target.value)} placeholder="e.g., Ministry of Health" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label>Cost US$</Label>
                 <Input type="number" value={formData.cost_usd} onChange={e => update("cost_usd", e.target.value)} placeholder="e.g., 50000" />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Implementing Entity</Label>
-                <Input value={formData.implementing_entity} onChange={e => update("implementing_entity", e.target.value)} placeholder="e.g., Ministry of Health" />
-              </div>
-              <div className="space-y-2">
-                <Label>Data Source</Label>
-                <Input value={formData.data_source} onChange={e => update("data_source", e.target.value)} placeholder="e.g., Training records" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Unit *</Label>
-                <Input value={formData.unit} onChange={e => update("unit", e.target.value)} placeholder="e.g., %" required />
-              </div>
-              <div className="space-y-2">
-                <Label>Subactivity ID</Label>
-                <Input value={formData.subactivity_id} onChange={e => update("subactivity_id", e.target.value)} placeholder="e.g., SUB-001" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Baseline Proposal Year</Label>
-                <Input value={formData.baseline_proposal_year} onChange={e => update("baseline_proposal_year", e.target.value)} placeholder="e.g., 2025" />
-              </div>
-              <div className="space-y-2">
-                <Label>Target Year 1</Label>
-                <Input value={formData.target_year_1} onChange={e => update("target_year_1", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Target Year 2</Label>
-                <Input value={formData.target_year_2} onChange={e => update("target_year_2", e.target.value)} />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <Label>Target Year 3</Label>
-                <Input value={formData.target_year_3} onChange={e => update("target_year_3", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Target Year 4</Label>
-                <Input value={formData.target_year_4} onChange={e => update("target_year_4", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Target Year 5</Label>
-                <Input value={formData.target_year_5} onChange={e => update("target_year_5", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Target Year 6</Label>
-                <Input value={formData.target_year_6} onChange={e => update("target_year_6", e.target.value)} />
-              </div>
-            </div>
-
-            <hr className="border-border" />
-            <p className="text-sm font-medium text-muted-foreground">Performance Tracking</p>
-
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Year</Label>
-                <Input type="number" value={formData.year} onChange={e => update("year", e.target.value)} placeholder="e.g., 2026" />
-              </div>
-              <div className="space-y-2">
-                <Label>Target</Label>
-                <Input type="number" value={formData.target} onChange={e => update("target", e.target.value)} />
-              </div>
-              <div className="space-y-2">
-                <Label>Evidence (URL)</Label>
-                <Input type="url" value={formData.evidence} onChange={e => update("evidence", e.target.value)} placeholder="https://..." />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4">
-              <div className="space-y-2"><Label>Q1</Label><Input type="number" value={formData.q1} onChange={e => update("q1", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Q2</Label><Input type="number" value={formData.q2} onChange={e => update("q2", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Q3</Label><Input type="number" value={formData.q3} onChange={e => update("q3", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Q4</Label><Input type="number" value={formData.q4} onChange={e => update("q4", e.target.value)} /></div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Description</Label>
-              <Textarea value={formData.description} onChange={e => update("description", e.target.value)} placeholder="Brief description" rows={2} />
-            </div>
-
+            <SectionTitle>Notes & Links</SectionTitle>
             <div className="space-y-2">
               <Label>Comments</Label>
               <Textarea value={formData.comments} onChange={e => update("comments", e.target.value)} placeholder="Add any comments or notes" rows={2} />
