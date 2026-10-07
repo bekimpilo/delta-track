@@ -18,6 +18,10 @@ export interface ReportBack {
   other?: number | null;
   youth?: number | null;
   disability?: number | null;
+  engagement?: number | null;
+  engagementNotes?: string;
+  trainerPerformance?: number | null;
+  trainerNotes?: string;
   outcomes?: string;
   challenges?: string;
   nextSteps?: string;
