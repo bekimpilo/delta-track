@@ -64,6 +64,30 @@ export const ReportStatusBadge = ({ status }: { status: ReportStatus }) => {
 
 const num = (v: string) => (v === "" ? null : Math.max(0, Math.floor(Number(v))) || 0);
 
+const RATING_LABELS = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+
+const RatingPicker = ({ label, value, onChange }: { label: string; value?: number | null; onChange: (v: number | null) => void }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs">{label}</Label>
+    <div className="flex flex-wrap gap-1.5">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(value === n ? null : n)}
+          className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+            value === n
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card text-muted-foreground hover:bg-muted/50"
+          }`}
+        >
+          {n} · {RATING_LABELS[n]}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 interface DialogProps {
   meeting: Meeting | null;
   open: boolean;
