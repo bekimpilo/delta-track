@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, Building2, Edit } from "lucide-react";
+import { Calendar, Users, Building2, Edit, ClipboardCheck, UserCheck } from "lucide-react";
+import { ReportBackDialog, ReportStatusBadge, reportStatus, totalAttendees } from "@/components/ReportBack";
 import { MeetingDetailsDialog, type Meeting, formatMeetingDateRange } from "@/components/MeetingDetailsDialog";
 import { EditMeetingDialog } from "@/components/EditMeetingDialog";
 import { AddMeetingDialog } from "@/components/AddMeetingDialog";
@@ -19,6 +20,8 @@ const Meetings = () => {
   const [editingMeeting, setEditingMeeting] = useState<Meeting | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [reportMeeting, setReportMeeting] = useState<Meeting | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
   const { user, isAdmin } = useAuth();
 
   const loadMeetings = async () => {
@@ -54,6 +57,18 @@ const Meetings = () => {
     } catch (err) {
       console.error(err);
       toast.error("Failed to update event");
+    }
+  };
+
+  const handleSaveReport = async (m: Meeting) => {
+    try {
+      const saved = await api.updateMeeting(m.id, m);
+      setMeetings(prev => prev.map(x => x.id === m.id ? (saved as Meeting) : x));
+      toast.success("Report back saved");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to save report back");
+      throw err;
     }
   };
 
@@ -188,6 +203,25 @@ const Meetings = () => {
                       )}
                     </div>
                   </div>
+                  <div className="flex items-center justify-between gap-2 pt-2 mt-1 border-t border-border/60">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <ReportStatusBadge status={reportStatus(meeting)} />
+                      {totalAttendees(meeting.reportBack) != null && (
+                        <span className="flex items-center gap-1"><UserCheck className="h-3.5 w-3.5" />{totalAttendees(meeting.reportBack)} attendees</span>
+                      )}
+                    </div>
+                    {user && reportStatus(meeting) !== "Upcoming" && (
+                      <Button
+                        size="sm"
+                        variant={meeting.reportBack?.submittedAt ? "ghost" : "default"}
+                        className="h-7 gap-1.5 text-xs"
+                        onClick={(e) => { e.stopPropagation(); setReportMeeting(meeting); setReportOpen(true); }}
+                      >
+                        <ClipboardCheck className="h-3.5 w-3.5" />
+                        {meeting.reportBack?.submittedAt ? "Edit Report" : "Submit Report Back"}
+                      </Button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -197,6 +231,14 @@ const Meetings = () => {
 
       <MeetingDetailsDialog meeting={selectedMeeting} open={detailsOpen} onOpenChange={setDetailsOpen} />
       <EditMeetingDialog meeting={editingMeeting} open={editOpen} onOpenChange={setEditOpen} onSave={handleSaveMeeting} />
+      <ReportBackDialog
+        meeting={reportMeeting}
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+        onSave={handleSaveReport}
+        isAdmin={isAdmin()}
+        userName={user?.name || user?.email || ""}
+      />
     </div>
   );
 };
