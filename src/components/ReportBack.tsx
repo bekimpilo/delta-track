@@ -299,6 +299,29 @@ export const ReportBackView = ({ meeting }: { meeting: Meeting }) => {
               </div>
             </div>
           )}
+          {(r.engagement != null || r.trainerPerformance != null) && (
+            <div className="grid sm:grid-cols-2 gap-3">
+              {[
+                ["Participant engagement", r.engagement, r.engagementNotes],
+                ["Trainer performance", r.trainerPerformance, r.trainerNotes],
+              ].map(([label, rating, notes]) =>
+                rating != null ? (
+                  <div key={label as string} className="rounded-lg border border-border bg-card p-3 space-y-1">
+                    <p className="text-xs font-medium text-muted-foreground">{label}</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((n) => (
+                          <span key={n} className={`h-2 w-4 rounded-full ${n <= (rating as number) ? "bg-primary" : "bg-muted"}`} />
+                        ))}
+                      </div>
+                      <span className="text-sm font-medium">{rating}/5 · {RATING_LABELS[rating as number]}</span>
+                    </div>
+                    {notes ? <p className="text-xs text-muted-foreground whitespace-pre-wrap break-words">{notes}</p> : null}
+                  </div>
+                ) : null
+              )}
+            </div>
+          )}
           {[["Key outcomes", r.outcomes], ["Challenges", r.challenges], ["Next steps", r.nextSteps]].map(([l, v]) =>
             v ? (
               <div key={l}>
