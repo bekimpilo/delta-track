@@ -97,7 +97,7 @@ export const ProjectTable = ({ projects, onUpdateProject, readOnly = false }: Pr
       <div className="rounded-lg border border-border bg-card overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted/50 hover:bg-muted/50">
+            <TableRow>
               <TableHead className="font-semibold">Activity ID</TableHead>
               <TableHead className="font-semibold">Activity Description</TableHead>
               <TableHead className="font-semibold">Sub-Activity ID</TableHead>

@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Search, X } from "lucide-react";
+import { Search, X, SlidersHorizontal } from "lucide-react";
 
 interface ProjectFiltersProps {
   searchTerm: string;
@@ -67,7 +67,29 @@ export const ProjectFilters = ({
     modifiedDateTo;
 
   return (
-    <div className="bg-card/80 backdrop-blur-sm rounded-lg border-2 border-primary/20 p-4 shadow-lg animate-fade-in">
+    <div className="bg-card/90 backdrop-blur-sm rounded-xl border border-border p-4 shadow-card animate-fade-in">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+            <SlidersHorizontal className="h-4 w-4 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground">Filters</h3>
+            <p className="text-xs text-muted-foreground">Narrow down the activities shown</p>
+          </div>
+        </div>
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClearFilters}
+            className="text-muted-foreground hover:text-foreground hover:bg-destructive/10 hover:text-destructive"
+          >
+            <X className="h-4 w-4 mr-2" />
+            Clear all
+          </Button>
+        )}
+      </div>
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -170,17 +192,6 @@ export const ProjectFilters = ({
           />
         </div>
 
-        {hasActiveFilters && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClearFilters}
-            className="text-muted-foreground hover:text-foreground hover:bg-destructive/10 hover:text-destructive"
-          >
-            <X className="h-4 w-4 mr-2" />
-            Clear
-          </Button>
-        )}
       </div>
     </div>
   );

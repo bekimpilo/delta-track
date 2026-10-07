@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Pencil, Trash2, Loader2, Download, Search, X } from "lucide-react";
+import { Pencil, Trash2, Loader2, Download, Search, X, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { EditIndicatorDialog } from "./EditIndicatorDialog";
@@ -234,7 +234,23 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
   return (
     <>
       {/* Filters */}
-      <div className="space-y-3 mb-4">
+      <div className="bg-card/90 backdrop-blur-sm rounded-xl border border-border p-4 shadow-card mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
+              <SlidersHorizontal className="h-4 w-4 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Filters</h3>
+              <p className="text-xs text-muted-foreground">Narrow down the indicators shown</p>
+            </div>
+          </div>
+          {hasActiveFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-muted-foreground hover:text-foreground">
+              <X className="h-4 w-4" /> Clear all
+            </Button>
+          )}
+        </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -333,13 +349,8 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
               ))}
             </SelectContent>
           </Select>
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-              <X className="h-4 w-4" /> Clear
-            </Button>
-          )}
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
           <p className="text-sm text-muted-foreground">
             Showing {filteredIndicators.length} of {indicators.length} indicators
             {hasActiveFilters && " (filtered)"}

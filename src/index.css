@@ -37,6 +37,9 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
+    --table-header: 158 42% 93%;
+    --table-header-foreground: 158 90% 16%;
+
     --border: 220 13% 90%;
     --input: 220 13% 90%;
     --ring: 158 100% 20%;
@@ -98,6 +101,9 @@
 
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
+
+    --table-header: 158 35% 13%;
+    --table-header-foreground: 158 45% 78%;
 
     --border: 220 12% 17%;
     --input: 220 12% 17%;
