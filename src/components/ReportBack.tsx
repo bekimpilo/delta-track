@@ -184,6 +184,28 @@ export const ReportBackDialog = ({ meeting, open, onOpenChange, onSave, isAdmin,
             </div>
           </section>
 
+          <section className="space-y-4 rounded-xl border border-border bg-card p-4">
+            <h4 className="text-sm font-semibold">Engagement & Trainer</h4>
+            <RatingPicker
+              label="Participant engagement"
+              value={r.engagement}
+              onChange={(v) => setR({ ...r, engagement: v })}
+            />
+            <div className="space-y-1.5">
+              <Label htmlFor="rb-engagementNotes" className="text-xs">Engagement notes (optional)</Label>
+              <Textarea id="rb-engagementNotes" rows={2} value={r.engagementNotes || ""} onChange={(e) => setR({ ...r, engagementNotes: e.target.value.slice(0, 2000) })} />
+            </div>
+            <RatingPicker
+              label="Trainer performance"
+              value={r.trainerPerformance}
+              onChange={(v) => setR({ ...r, trainerPerformance: v })}
+            />
+            <div className="space-y-1.5">
+              <Label htmlFor="rb-trainerNotes" className="text-xs">Trainer notes (optional)</Label>
+              <Textarea id="rb-trainerNotes" rows={2} value={r.trainerNotes || ""} onChange={(e) => setR({ ...r, trainerNotes: e.target.value.slice(0, 2000) })} />
+            </div>
+          </section>
+
           <section className="space-y-3 rounded-xl border border-border bg-card p-4">
             <h4 className="text-sm font-semibold">Summary</h4>
             {(["outcomes", "challenges", "nextSteps"] as const).map((k) => (
