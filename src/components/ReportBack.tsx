@@ -18,6 +18,10 @@ export interface ReportBack {
   other?: number | null;
   youth?: number | null;
   disability?: number | null;
+  engagement?: number | null;
+  engagementNotes?: string;
+  trainerPerformance?: number | null;
+  trainerNotes?: string;
   outcomes?: string;
   challenges?: string;
   nextSteps?: string;
@@ -59,6 +63,30 @@ export const ReportStatusBadge = ({ status }: { status: ReportStatus }) => {
 };
 
 const num = (v: string) => (v === "" ? null : Math.max(0, Math.floor(Number(v))) || 0);
+
+const RATING_LABELS = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+
+const RatingPicker = ({ label, value, onChange }: { label: string; value?: number | null; onChange: (v: number | null) => void }) => (
+  <div className="space-y-1.5">
+    <Label className="text-xs">{label}</Label>
+    <div className="flex flex-wrap gap-1.5">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(value === n ? null : n)}
+          className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+            value === n
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card text-muted-foreground hover:bg-muted/50"
+          }`}
+        >
+          {n} · {RATING_LABELS[n]}
+        </button>
+      ))}
+    </div>
+  </div>
+);
 
 interface DialogProps {
   meeting: Meeting | null;
@@ -156,6 +184,28 @@ export const ReportBackDialog = ({ meeting, open, onOpenChange, onSave, isAdmin,
             </div>
           </section>
 
+          <section className="space-y-4 rounded-xl border border-border bg-card p-4">
+            <h4 className="text-sm font-semibold">Engagement & Trainer</h4>
+            <RatingPicker
+              label="Participant engagement"
+              value={r.engagement}
+              onChange={(v) => setR({ ...r, engagement: v })}
+            />
+            <div className="space-y-1.5">
+              <Label htmlFor="rb-engagementNotes" className="text-xs">Engagement notes (optional)</Label>
+              <Textarea id="rb-engagementNotes" rows={2} value={r.engagementNotes || ""} onChange={(e) => setR({ ...r, engagementNotes: e.target.value.slice(0, 2000) })} />
+            </div>
+            <RatingPicker
+              label="Trainer performance"
+              value={r.trainerPerformance}
+              onChange={(v) => setR({ ...r, trainerPerformance: v })}
+            />
+            <div className="space-y-1.5">
+              <Label htmlFor="rb-trainerNotes" className="text-xs">Trainer notes (optional)</Label>
+              <Textarea id="rb-trainerNotes" rows={2} value={r.trainerNotes || ""} onChange={(e) => setR({ ...r, trainerNotes: e.target.value.slice(0, 2000) })} />
+            </div>
+          </section>
+
           <section className="space-y-3 rounded-xl border border-border bg-card p-4">
             <h4 className="text-sm font-semibold">Summary</h4>
             {(["outcomes", "challenges", "nextSteps"] as const).map((k) => (
@@ -247,6 +297,29 @@ export const ReportBackView = ({ meeting }: { meeting: Meeting }) => {
                 {r.youth != null && <span>Youth: {r.youth}</span>}
                 {r.disability != null && <span>With disabilities: {r.disability}</span>}
               </div>
+            </div>
+          )}
+          {(r.engagement != null || r.trainerPerformance != null) && (
+            <div className="grid sm:grid-cols-2 gap-3">
+              {[
+                ["Participant engagement", r.engagement, r.engagementNotes],
+                ["Trainer performance", r.trainerPerformance, r.trainerNotes],
+              ].map(([label, rating, notes]) =>
+                rating != null ? (
+                  <div key={label as string} className="rounded-lg border border-border bg-card p-3 space-y-1">
+                    <p className="text-xs font-medium text-muted-foreground">{label}</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((n) => (
+                          <span key={n} className={`h-2 w-4 rounded-full ${n <= (rating as number) ? "bg-primary" : "bg-muted"}`} />
+                        ))}
+                      </div>
+                      <span className="text-sm font-medium">{rating}/5 · {RATING_LABELS[rating as number]}</span>
+                    </div>
+                    {notes ? <p className="text-xs text-muted-foreground whitespace-pre-wrap break-words">{notes}</p> : null}
+                  </div>
+                ) : null
+              )}
             </div>
           )}
           {[["Key outcomes", r.outcomes], ["Challenges", r.challenges], ["Next steps", r.nextSteps]].map(([l, v]) =>
