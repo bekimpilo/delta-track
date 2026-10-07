@@ -14,6 +14,8 @@ export default {
     },
     extend: {
       colors: {
+        "table-header": "hsl(var(--table-header))",
+        "table-header-foreground": "hsl(var(--table-header-foreground))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
