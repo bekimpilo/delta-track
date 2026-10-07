@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ReportBackView, type ReportBack } from "./ReportBack";
 import {
   averagesPerCompetency,
   getAllRows,
@@ -36,6 +37,7 @@ export interface Meeting {
   preSurveyQrCode?: string;
   postSurveyQrCode?: string;
   attachments?: string;
+  reportBack?: ReportBack | null;
 }
 
 const fmtDate = (d?: string) =>
@@ -175,6 +177,9 @@ export const MeetingDetailsDialog = ({ meeting, open, onOpenChange }: MeetingDet
               <Separator />
             </>
           )}
+
+          <ReportBackView meeting={meeting} />
+          <Separator />
 
         {(meeting.preSurveyLink || meeting.postSurveyLink) && (
             <>

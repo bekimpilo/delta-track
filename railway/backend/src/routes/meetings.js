@@ -32,13 +32,14 @@ const mapRow = (r) => ({
   preSurveyQrCode: r.pre_survey_qr_code || undefined,
   postSurveyQrCode: r.post_survey_qr_code || undefined,
   attachments: r.attachments || undefined,
+  reportBack: parseJson(r.report_back, null),
 });
 
 // Build the column/value pair for an incoming meeting payload.
 const buildFields = (body) => {
   const dateFrom = body.meetingDateFrom ?? body.meeting_date_from ?? body.date ?? null;
   const dateTo = body.meetingDateTo ?? body.meeting_date_to ?? null;
-  return {
+  const f = {
     activity_id: body.activityId ?? null,
     sub_activity_id: body.subActivityId ?? null,
     quarter: body.quarter ?? null,
@@ -59,6 +60,11 @@ const buildFields = (body) => {
     post_survey_qr_code: body.postSurveyQrCode ?? null,
     attachments: body.attachments ?? null,
   };
+  // Only touch the report back when the payload includes it, so other edits don't wipe it.
+  if (body.reportBack !== undefined) {
+    f.report_back = body.reportBack ? JSON.stringify(body.reportBack).slice(0, 60000) : null;
+  }
+  return f;
 };
 
 router.get('/', authenticateToken, async (req, res) => {

@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS meetings (
   pre_survey_qr_code LONGTEXT NULL,
   post_survey_qr_code LONGTEXT NULL,
   attachments TEXT NULL,
+  report_back TEXT NULL, -- JSON: attendance, gender split, outcomes, links, review
   -- legacy columns kept for backwards compatibility
   title VARCHAR(255) NULL,
   description TEXT,

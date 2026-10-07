@@ -3,6 +3,7 @@ import { Download } from "lucide-react";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
 import type { Meeting } from "./MeetingDetailsDialog";
+import { reportStatus, totalAttendees } from "./ReportBack";
 
 interface MeetingExcelExportProps {
   meetings: Meeting[];
@@ -31,6 +32,17 @@ export const MeetingExcelExport = ({ meetings }: MeetingExcelExportProps) => {
       "Organiser Phone": meeting.organiserPhone || "",
       "Pre-Survey Link": meeting.preSurveyLink || "",
       "Post-Survey Link": meeting.postSurveyLink || "",
+      "Report Status": reportStatus(meeting),
+      "Total Attendees": totalAttendees(meeting.reportBack) ?? "",
+      "Female": meeting.reportBack?.female ?? "",
+      "Male": meeting.reportBack?.male ?? "",
+      "Other / Prefer not to say": meeting.reportBack?.other ?? "",
+      "Youth": meeting.reportBack?.youth ?? "",
+      "People with Disabilities": meeting.reportBack?.disability ?? "",
+      "Key Outcomes": meeting.reportBack?.outcomes || "",
+      "Challenges": meeting.reportBack?.challenges || "",
+      "Next Steps": meeting.reportBack?.nextSteps || "",
+      "Reviewed By": meeting.reportBack?.reviewedBy || "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(excelData);
@@ -41,6 +53,8 @@ export const MeetingExcelExport = ({ meetings }: MeetingExcelExportProps) => {
       { wch: 12 }, { wch: 15 }, { wch: 10 }, { wch: 14 }, { wch: 14 }, { wch: 25 },
       { wch: 12 }, { wch: 30 }, { wch: 30 }, { wch: 35 },
       { wch: 20 }, { wch: 25 }, { wch: 18 }, { wch: 35 }, { wch: 35 },
+      { wch: 14 }, { wch: 14 }, { wch: 10 }, { wch: 10 }, { wch: 14 }, { wch: 10 }, { wch: 14 },
+      { wch: 40 }, { wch: 40 }, { wch: 40 }, { wch: 20 },
     ];
 
     const timestamp = new Date().toISOString().split('T')[0];
