@@ -349,13 +349,8 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
               ))}
             </SelectContent>
           </Select>
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-              <X className="h-4 w-4" /> Clear
-            </Button>
-          )}
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
           <p className="text-sm text-muted-foreground">
             Showing {filteredIndicators.length} of {indicators.length} indicators
             {hasActiveFilters && " (filtered)"}
