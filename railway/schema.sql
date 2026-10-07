@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS indicators (
   target_year_4 TEXT NULL,
   target_year_5 TEXT NULL,
   target_year_6 TEXT NULL,
+  yearly_performance TEXT NULL,
   description TEXT NULL,
   unit VARCHAR(100) NULL,
   subactivity_id TEXT NULL,
@@ -307,3 +308,6 @@ CREATE TABLE IF NOT EXISTS me_activities (
 );
 
 CREATE INDEX idx_me_activities_status ON me_activities(status);
+
+-- 2026-10-07: per-year quarterly + annual actuals (JSON text)
+-- ALTER TABLE indicators ADD COLUMN yearly_performance TEXT NULL;

@@ -1,3 +1,4 @@
+import { YEARS, yearCols } from "./yearlyPerformance";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import * as XLSX from "xlsx";
@@ -23,12 +24,7 @@ export const IndicatorExcelTemplate = () => {
         "Data Source": "Training records",
         "Budget US$": 50000,
         "Baseline Proposal Year": "2025",
-        "Target Year 1": "100 trained",
-        "Target Year 2": "150 trained",
-        "Target Year 3": "200 trained",
-        "Target Year 4": "250 trained",
-        "Target Year 5": "300 trained",
-        "Target Year 6": "350 trained",
+        ...Object.assign({}, ...YEARS.map(y => { const c = yearCols(y); return { [c.target]: y === 1 ? "100" : "", [c.q1]: y === 1 ? "20" : "", [c.q2]: "", [c.q3]: "", [c.q4]: "", [c.annual]: "" }; })),
         "Comments": "Example comments",
       },
     ];
@@ -42,8 +38,7 @@ export const IndicatorExcelTemplate = () => {
       { wch: 18 }, { wch: 18 }, { wch: 15 }, { wch: 30 },
       { wch: 35 }, { wch: 14 }, { wch: 45 }, { wch: 20 },
       { wch: 20 }, { wch: 20 }, { wch: 12 }, { wch: 20 },
-      { wch: 15 }, { wch: 15 }, { wch: 15 }, { wch: 15 },
-      { wch: 15 }, { wch: 15 }, { wch: 30 },
+      ...Array(36).fill({ wch: 16 }), { wch: 30 },
     ];
 
     XLSX.writeFile(workbook, "indicators_template.xlsx");
