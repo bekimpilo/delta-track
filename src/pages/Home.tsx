@@ -113,7 +113,7 @@ export default function Home() {
             Monitoring &amp; Evaluation Platform
           </div>
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.05] text-foreground max-w-4xl mx-auto">
-            One place to track every activity, indicator and event across our partner network.
+            One place to track every activity, indicator and events.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             The M&amp;E Reporting Tool brings together delivery partners and implementing entities to plan, monitor and report on shared programmes, transparently and in real time.
