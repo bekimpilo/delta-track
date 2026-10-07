@@ -15,6 +15,7 @@ import {
   Layers,
   Activity,
 } from "lucide-react";
+import { YearlyPerformanceView } from "./yearlyPerformance";
 import { DataLinksList } from "@/components/DataLinksList";
 import type { Indicator } from "./IndicatorsTab";
 
@@ -164,14 +165,14 @@ export function IndicatorDetailsDialog({
               />
             </Section>
 
-            <Section icon={CalendarRange} title="Targets by Year">
+            <Section icon={CalendarRange} title="Targets & Performance by Year">
               <Field label="Baseline / Proposal Year" value={indicator.baseline_proposal_year} />
-              <Field label="Target Year 1" value={indicator.target_year_1} />
-              <Field label="Target Year 2" value={indicator.target_year_2} />
-              <Field label="Target Year 3" value={indicator.target_year_3} />
-              <Field label="Target Year 4" value={indicator.target_year_4} />
-              <Field label="Target Year 5" value={indicator.target_year_5} />
-              <Field label="Target Year 6" value={indicator.target_year_6} />
+              <div className="sm:col-span-2">
+                <YearlyPerformanceView
+                  targets={{ 1: indicator.target_year_1, 2: indicator.target_year_2, 3: indicator.target_year_3, 4: indicator.target_year_4, 5: indicator.target_year_5, 6: indicator.target_year_6 }}
+                  raw={(indicator as any).yearly_performance}
+                />
+              </div>
             </Section>
 
             {indicator.evidence && (

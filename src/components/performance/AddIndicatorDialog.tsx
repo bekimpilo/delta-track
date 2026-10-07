@@ -9,6 +9,7 @@ import { api } from "@/services/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { YearlyPerformanceEditor, parseYearly, serializeYearly } from "./yearlyPerformance";
 import { DataLinksEditor } from "@/components/DataLinksEditor";
 
 interface AddIndicatorDialogProps {
@@ -37,6 +38,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicatorDialogProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
+  const [yearly, setYearly] = useState(parseYearly(null));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,10 +69,12 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
         target_year_4: formData.target_year_4 || null,
         target_year_5: formData.target_year_5 || null,
         target_year_6: formData.target_year_6 || null,
+        yearly_performance: serializeYearly(yearly),
       });
 
       toast.success("Indicator created successfully");
       setFormData(initialFormData);
+      setYearly(parseYearly(null));
       onSuccess();
       onOpenChange(false);
     } catch (error) {
@@ -186,14 +190,14 @@ export function AddIndicatorDialog({ open, onOpenChange, onSuccess }: AddIndicat
 
             <SectionTitle>Baseline &amp; Targets</SectionTitle>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>Baseline / Proposal Year</Label><Input value={formData.baseline_proposal_year} onChange={e => update("baseline_proposal_year", e.target.value)} placeholder="e.g., 120" /></div>
-              <div className="space-y-2"><Label>Target Year 1</Label><Input value={formData.target_year_1} onChange={e => update("target_year_1", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Target Year 2</Label><Input value={formData.target_year_2} onChange={e => update("target_year_2", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Target Year 3</Label><Input value={formData.target_year_3} onChange={e => update("target_year_3", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Target Year 4</Label><Input value={formData.target_year_4} onChange={e => update("target_year_4", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Target Year 5</Label><Input value={formData.target_year_5} onChange={e => update("target_year_5", e.target.value)} /></div>
-              <div className="space-y-2"><Label>Target Year 6</Label><Input value={formData.target_year_6} onChange={e => update("target_year_6", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Baseline / Proposal Year</Label><Input value={formData.baseline_proposal_year} onChange={e => update("baseline_proposal_year", e.target.value)} /></div>
             </div>
+            <YearlyPerformanceEditor
+              targets={{ 1: formData.target_year_1, 2: formData.target_year_2, 3: formData.target_year_3, 4: formData.target_year_4, 5: formData.target_year_5, 6: formData.target_year_6 }}
+              onTargetChange={(y, v) => update(`target_year_${y}`, v)}
+              value={yearly}
+              onChange={setYearly}
+            />
 
 
             <SectionTitle>Notes & Links</SectionTitle>

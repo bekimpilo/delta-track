@@ -1,3 +1,4 @@
+import { YEARS, yearCols, parseYearly, achievement } from "./yearlyPerformance";
 import { useEffect, useMemo, useState } from "react";
 import { api } from "@/services/api";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -10,6 +11,17 @@ import { toast } from "sonner";
 import { EditIndicatorDialog } from "./EditIndicatorDialog";
 import { IndicatorDetailsDialog } from "./IndicatorDetailsDialog";
 import * as XLSX from "xlsx";
+
+function yearGroups(ind: any) {
+  const yp = parseYearly(ind.yearly_performance);
+  const out: Record<string, string> = {};
+  YEARS.forEach(y => {
+    const c = yearCols(y); const t = ind[`target_year_${y}`] ?? "";
+    out[c.target] = t; out[c.q1] = yp[y].q1; out[c.q2] = yp[y].q2; out[c.q3] = yp[y].q3; out[c.q4] = yp[y].q4;
+    out[c.annual] = yp[y].annual; out[c.pct] = achievement(t, yp[y].annual);
+  });
+  return out;
+}
 
 export interface Indicator {
   id: string;
@@ -49,6 +61,7 @@ export interface Indicator {
   target_year_4: string | null;
   target_year_5: string | null;
   target_year_6: string | null;
+  yearly_performance?: string | null;
   data_links?: string | null;
 }
 
@@ -189,19 +202,7 @@ export function IndicatorsTab({ onUpdate }: IndicatorsTabProps) {
       "Data Source": ind.data_source || "",
       "Budget US$": ind.cost_usd ?? "",
       "Baseline Proposal Year": ind.baseline_proposal_year ?? "",
-      "Target Year 1": ind.target_year_1 ?? "",
-      "Target Year 2": ind.target_year_2 ?? "",
-      "Target Year 3": ind.target_year_3 ?? "",
-      "Target Year 4": ind.target_year_4 ?? "",
-      "Target Year 5": ind.target_year_5 ?? "",
-      "Target Year 6": ind.target_year_6 ?? "",
-      "Year": ind.year || "",
-      "Target": ind.target ?? "",
-      "Q1": ind.q1 ?? "",
-      "Q2": ind.q2 ?? "",
-      "Q3": ind.q3 ?? "",
-      "Q4": ind.q4 ?? "",
-      "Annual Performance": ind.annual_performance ?? "",
+      ...yearGroups(ind),
       "Evidence": ind.evidence || "",
       "Comments": ind.comments || "",
     }));

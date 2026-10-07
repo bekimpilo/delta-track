@@ -1,3 +1,4 @@
+import { YEARS, yearCols, serializeYearly } from "./yearlyPerformance";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, Loader2 } from "lucide-react";
@@ -65,12 +66,16 @@ export const IndicatorExcelUpload = ({ onSuccess }: IndicatorExcelUploadProps) =
           data_source: toStr(row["Data Source"] ?? row["Data source"]),
           unit: toStr(row["Unit"] ?? row["unit"]) ?? "Number",
           baseline_proposal_year: toStr(row["Baseline Proposal Year"]),
-          target_year_1: toStr(row["Target Year 1"] ?? row["Target Year 1 (proposal year)"]),
-          target_year_2: toStr(row["Target Year 2"]),
-          target_year_3: toStr(row["Target Year 3"]),
-          target_year_4: toStr(row["Target Year 4"]),
-          target_year_5: toStr(row["Target Year 5"]),
-          target_year_6: toStr(row["Target Year 6"]),
+          target_year_1: toStr(row["Year 1 Target"] ?? row["Target Year 1"] ?? row["Target Year 1 (proposal year)"]),
+          target_year_2: toStr(row["Year 2 Target"] ?? row["Target Year 2"]),
+          target_year_3: toStr(row["Year 3 Target"] ?? row["Target Year 3"]),
+          target_year_4: toStr(row["Year 4 Target"] ?? row["Target Year 4"]),
+          target_year_5: toStr(row["Year 5 Target"] ?? row["Target Year 5"]),
+          target_year_6: toStr(row["Year 6 Target"] ?? row["Target Year 6"]),
+          yearly_performance: serializeYearly(Object.fromEntries(YEARS.map(y => {
+            const c = yearCols(y);
+            return [y, { q1: toStr(row[c.q1]) ?? "", q2: toStr(row[c.q2]) ?? "", q3: toStr(row[c.q3]) ?? "", q4: toStr(row[c.q4]) ?? "", annual: toStr(row[c.annual]) ?? "" }];
+          }))),
           comments: toStr(row["Comments"] ?? row["comments"]),
         };
       });
